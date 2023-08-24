@@ -6,10 +6,10 @@ int main(int argc, char const *argv[])
 {
     string name;
 
-    std::cout << "Digite o seu nome: ";
+    cout << "Digite o seu nome: ";
     cin >> name;
 
-    std::cout << "'Bom dia " << name << std::endl;
+    cout << "'Bom dia " << name << endl;
 
     return 0;
 }

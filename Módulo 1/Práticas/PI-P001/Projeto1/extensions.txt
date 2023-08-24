@@ -1,0 +1,24 @@
+Exercício 7:Verificando Extensões Instaladas: anote quais extensões existem instaladas atualmente na sua IDE.
+
+    C/C++:
+    Suporte para as linguagens C/C++ para editar e debugar códigos.
+
+    C/C++ Compile Run:
+    Compilar, inicializar e debugar códigos em C/C++.
+
+Exercício 8: Instalando Extensões:
+Instale duas extensões de sua preferência. Explique para que servem as extensões
+instaladas e o que mudou na sua IDE após a instalação.
+
+    Auto-Open Markdown Preview:
+    Pré-Visualização de Markdown. Instalei para realizar a edição e visualização do README.md do github.
+
+    WakaTime:
+    Contabilizar o tempo de desenvolvimento em cada linguagem e projeto. Utilizo para otimizar o tempo de produção e contabilizar a quantidade de tempo em cada liguagem, assim determinando a experiência nas mesmas.
+
+Exercício 9: Customizando a IDE - Temas:
+Instale o Tema Drácula na sua IDE. Escolha qual o melhor tema de sua preferência.
+Descreva como você fez para configurar o tema da sua IDE.
+
+    One Dark Pro Darker:
+    Instalação utilizando o comando CTRL+SHIFT+P e selecionando a opção Preference:Color Theme.
