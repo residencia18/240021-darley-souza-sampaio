@@ -1,6 +1,6 @@
 # Repositório de Atividades da Residência em TIC18
 
-Bem-vindo ao repositório de atividades da Residência em Software TIC18! Aqui você encontrará as pastas e recursos relacionados às atividades desenvolvidas ao longo da residência.
+Bem-vindo ao repositório de atividades da Residência em Software TIC18! Aqui você encontrará as pastas e recursos relacionados às atividades desenvolvidas por mim ao longo da residência.
 
 ## Sobre a Residência
 
