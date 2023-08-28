@@ -1,10 +1,8 @@
-<div>
-    <h1> INSTRUÇÃO PRÁTICA PI-P001</h1>
-</div>
+# INSTRUÇÃO PRÁTICA PI-P001
 
-<h2> OBJETIVO DA ATIVIDADE</h2>
-<p> Familiarizar-se com a IDE MS-Code. Aprender como compilar e
+## OBJETIVO DA ATIVIDADE
+
+Familiarizar-se com a IDE MS-Code. Aprender como compilar e
 executar programas dentro da IDE. Aprender a instalar
-complementos. Ter contato com os primeiros programas no curso.</p>
-<p> A atividade se encontra no arquivo PI-P001.pdf</p>
-
+complementos. Ter contato com os primeiros programas no curso.
+A atividade se encontra no arquivo PI-P001.pdf
