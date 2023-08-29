@@ -1,0 +1,1 @@
+Já fiz isso no começo utilizando o comando GIT REMOTE ADD ORIGIN e o link do repositório.
