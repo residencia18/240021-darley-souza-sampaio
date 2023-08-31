@@ -9,15 +9,13 @@ int main(void)
 {
     float imcCalculate, weight, height;
     
-    cout << "Digite seu peso(xx.x): ";
-    cin >> weight;
+    cout << "Digite seu peso(xx.x) e sua altura(x.xx), com um espaço entre eles: ";
+    cin >> weight >> height;
 
-    cout << "Digite sua altura(x.xx): ";
-    cin >> height;
 
     imcCalculate = weight/pow(height, 2);
 
-    cout << "Seu IMC é: " << std::fixed << std::setprecision(2) << imcCalculate << endl;
+    cout << "Seu IMC é: " << fixed << setprecision(2) << imcCalculate << endl;
 
 
     
