@@ -7,10 +7,10 @@ int main(void)
 {
     string nome;
     int anoNascimento;
-    std::cout << "Digite seu nome:";
+    cout << "Digite seu nome:";
 
     cin >> nome;
-    std::cout << "Bom dia" << nome << ". Tenha um bom curso";
+    cout << "Bom dia" << nome << ". Tenha um bom curso";
 
     cout << nome << ", voce nasceu em que ano?: ";
     cin >> anoNascimento;
