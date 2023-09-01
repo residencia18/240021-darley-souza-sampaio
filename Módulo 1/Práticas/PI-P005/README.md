@@ -8,3 +8,9 @@ atribuição e suas peculiaridades. Compreender a aplicação dos
 operadores aritméticos, relacionais, lógicos e bit a bit. Utilizar o
 operador condicional ou ternário com primeira estrutura de
 seleção simples.
+
+Integrantes do grupo:
+
+- Darley (Dan)
+- Ticiana
+- Thais
