@@ -2,23 +2,19 @@
 
 using namespace std;
 
-int main(void) {
-    int number = 0, fib1 = 0, fib2 = 1, temp = 0;
+int main()
+{
+    int number, divisorsSum = 0;
 
     cout << "Digite um número inteiro: ";
     cin >> number;
 
-    cout << "Sequência de Fibonacci(" << number << "): ";
-    
-    while (fib1 <= number) {
-        cout << fib1 << " ";
-
-        temp = fib1 + fib2;
-        
-        fib1 = fib2;
-        fib2 = temp;
+    for (int i = 1; i < number; i++)
+    {
+        if (number % i == 0)
+            divisorsSum += i;
     }
+    (divisorsSum == number) ? cout << number << " é um número perfeito." << endl : cout << number << " não é um número perfeito." << endl;
 
-    cout << endl;
     return 0;
 }
