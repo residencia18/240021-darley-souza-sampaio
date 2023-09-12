@@ -109,17 +109,17 @@ void showCustomers(const vector<Client> &customers)
 
 void showClient(const vector<Client> &customers)
 {
-    string name;
+    string cpf;
 
     cout << endl;
-    cout << "Nome do cliente: ";
+    cout << "CPF do cliente: ";
     cin.ignore();
-    getline(cin, name);
+    getline(cin, cpf);
     cout << endl;
 
     for (const Client &client : customers)
     {
-        if (client.name == name)
+        if (client.cpf == cpf)
         {
             cout << "Nome do Cliente: " << client.name << endl;
             cout << "CPF: " << client.cpf << endl
@@ -130,21 +130,21 @@ void showClient(const vector<Client> &customers)
 
 void deleteClient(vector<Client> &customers)
 {
-    string name;
+    string cpf;
 
     cout << endl;
-    cout << "Digite o nome: ";
+    cout << "Digite o CPF do cliente: ";
     cin.ignore();
-    getline(cin, name);
+    getline(cin, cpf);
 
     for (auto it = customers.begin(); it != customers.end(); ++it)
     {
-        if (it->name == name)
+        if (it->cpf == cpf)
         {
             customers.erase(it);
-            cout << "Cliente " << name << " excluído com sucesso!" << endl;
+            cout << "Cliente " << cpf << " excluído com sucesso!" << endl;
             return;
         }
     }
-    cout << "Cliente " << name << " não encontrado." << endl;
+    cout << "Cliente " << cpf << " não encontrado." << endl;
 }
