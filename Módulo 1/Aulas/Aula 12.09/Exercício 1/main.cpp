@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
 
@@ -14,6 +15,7 @@ void showCustomers(const vector<Client> &);
 void showMenu();
 void showClient(const vector<Client> &);
 void deleteClient(vector<Client> &);
+void updateClient(vector<Client> &);
 
 int main()
 {
@@ -38,8 +40,11 @@ int main()
                 Client client;
                 client = registerClient();
                 customers.push_back(client);
+
+                cout << "Usuário " << client.name << " incluído no sistema!!" << endl
+                     << endl;
+                sleep(2);
             }
-            cout << endl;
         }
         break;
         case 2:
@@ -56,13 +61,24 @@ int main()
         {
 
             deleteClient(customers);
+            sleep(2);
+            system("clear || cls");
         }
         break;
         case 5:
+        {
+
+            updateClient(customers);
+            sleep(2);
+            system("clear || cls");
+        }
+        break;
+        case 6:
             break;
         default:
             cout << "Opção inválida!!!" << endl
                  << endl;
+            sleep(3);
         }
     }
 
@@ -77,7 +93,8 @@ void showMenu()
          << "2 - Mostrar Cliente" << endl
          << "3 - Mostrar Todos Clientes" << endl
          << "4 - Excluir Cliente" << endl
-         << "5 - Sair" << endl
+         << "5 - Atualizar Nome do Cliente" << endl
+         << "6 - Sair" << endl
          << endl
          << "Selecione a opção: ";
 }
@@ -93,12 +110,14 @@ Client registerClient()
     cout << "CPF do cliente (XXX.XXX.XXX-XX): ";
     cin >> client.cpf;
 
+    cout << endl;
+
     return client;
 }
 
 void showCustomers(const vector<Client> &customers)
 {
-    cout << endl;
+    cout << "----- Todos os Clientes----- " << endl;
     for (const Client &client : customers)
     {
         cout << "Nome do Cliente: " << client.name << endl;
@@ -110,6 +129,7 @@ void showCustomers(const vector<Client> &customers)
 void showClient(const vector<Client> &customers)
 {
     string cpf;
+    bool search = false;
 
     cout << endl;
     cout << "CPF do cliente: ";
@@ -124,8 +144,12 @@ void showClient(const vector<Client> &customers)
             cout << "Nome do Cliente: " << client.name << endl;
             cout << "CPF: " << client.cpf << endl
                  << endl;
+            search = true;
         }
     }
+    if (search == false)
+        cout << "Cliente não encontrado!!!" << endl
+             << endl;
 }
 
 void deleteClient(vector<Client> &customers)
@@ -147,4 +171,31 @@ void deleteClient(vector<Client> &customers)
         }
     }
     cout << "Cliente " << cpf << " não encontrado." << endl;
+}
+
+void updateClient(vector<Client> &customers)
+{
+    string cpf, name;
+
+    cout << endl;
+    cout << "Digite o CPF do cliente: ";
+    cin.ignore();
+    getline(cin, cpf);
+
+    for (auto it = customers.begin(); it != customers.end(); ++it)
+    {
+        if (it->cpf == cpf)
+        {
+            cout << "Digite o novo nome para o cliente: ";
+            getline(cin, name);
+
+            it->name = name;
+
+            cout << "Nome do cliente alterado com sucesso!!!" << endl
+                 << "Novo nome: " << name;
+            return;
+        }
+        else
+            cout << "Cliente " << cpf << " não encontrado." << endl;
+    }
 }
