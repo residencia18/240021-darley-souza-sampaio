@@ -6,10 +6,6 @@ Segunda etapa da avaliação realizada em grupo:
 - Ticiana
 - Thais
 
-## Descrição do código
-
-Para a terceira etapa, foi adicionado um módulo ocorrência, onde o será registrado qualquer ocorrência ocorrida com o carro.
-
 ### Compilação
 
 Para compilar o código basta baixar o arquivo main.cpp e dentro da usa IDE compilar normalmente com as extensões devidas para a linguagem C++.
