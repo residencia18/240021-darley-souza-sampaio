@@ -187,7 +187,7 @@ Car registerCar(vector<Car> &cars)
 
     do
     {
-        bool success = false;
+        bool success;
         string renavam;
 
         cout << "Renavam do Carro (XXXXXXXXXXX): ";
@@ -212,16 +212,21 @@ Car registerCar(vector<Car> &cars)
             cout << "Renavam incorreto!! Digite novamente!!" << endl;
         }
 
-        if (success){
+        if (success)
+        {
             car.renavam = renavam;
             break;
+        }
+        else
+        {
+            cout << "Renavam já cadastrado!!! " << endl;
         }
 
     } while (true);
 
     do
     {
-        bool carPlateVerify, success = false;
+        bool carPlateVerify, success;
         string carPlate;
 
         cout << "Placa do Carro (XXX-XXX): ";
@@ -247,9 +252,15 @@ Car registerCar(vector<Car> &cars)
         {
             cout << "Placa do carro incorreta!! Digite novamente!!" << endl;
         }
-        if (success){
+
+        if (!success)
+        {
             car.carPlate = carPlate;
             break;
+        }
+        else
+        {
+            cout << "Carro com placa já cadastrado!!!" << endl;
         }
 
     } while (true);

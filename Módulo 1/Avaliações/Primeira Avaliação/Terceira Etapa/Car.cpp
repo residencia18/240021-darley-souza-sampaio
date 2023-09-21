@@ -238,7 +238,7 @@ Car registerCar(vector<Car> &cars)
                 }
                 else
                 {
-                    car.concessionaire = carPlate;
+                    car.carPlate = carPlate;
                     success = true;
                 }
             }
