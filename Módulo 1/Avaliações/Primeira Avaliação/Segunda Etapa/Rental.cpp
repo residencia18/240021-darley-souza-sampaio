@@ -95,33 +95,6 @@ void rentalMenu(vector<Rental> &rentals, vector<Car> &cars, vector<Client> &cust
         case 5:
             break;
         default:
-            Client client;
-            client.name = "Dan";
-            client.CPF = "375.332.058-71";
-            client.birthDate.day = 15;
-            client.birthDate.month = 4;
-            client.birthDate.year = 1998;
-            client.CNH = "12345678998";
-
-            Car car;
-
-            car.carPlate = "123-abc";
-            car.concessionaire = "ABC";
-            car.name = "Corsa";
-            car.renavam = "12345678998";
-            car.withdrawalDate.day = 15;
-            car.withdrawalDate.month = 4;
-            car.withdrawalDate.year = 2023;
-            car.returnDate.day = 15;
-            car.returnDate.month = 4;
-            car.returnDate.year = 2023;
-            car.hourReturnDate.hour = 15;
-            car.hourReturnDate.minute = 30;
-            car.hourWithdrawDate.hour = 18;
-            car.hourWithdrawDate.minute = 30;
-
-            customers.push_back(client);
-            cars.push_back(car);
             cout << "Opção inválida!!!" << endl
                  << endl;
             sleep(3);
@@ -214,8 +187,7 @@ Rental registerRental(vector<Client> &customers, vector<Car> &cars)
 
         rental.carData.returnDate = rental.returnRentalDate;
         rental.carData.hourReturnDate = rental.hourReturnRentalDate;
-        
-    }
+        }
     else
     {
         cout
