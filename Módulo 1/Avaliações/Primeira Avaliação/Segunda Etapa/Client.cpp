@@ -13,7 +13,7 @@ Client registerClient(vector<Client> &customers)
 
     do
     {
-        bool cpfVerify, success = false;
+        bool cpfVerify, success;
         string cpf;
 
         cout << "CPF do cliente (XXX.XXX.XXX-XX): ";
@@ -27,11 +27,10 @@ Client registerClient(vector<Client> &customers)
             {
                 if (it->CPF == cpf)
                 {
-                    cout << "CPF já cadastrado!!!" << endl;
+                    success == false;
                 }
                 else
                 {
-                    client.CPF = cpf;
                     success = true;
                 }
             }
@@ -40,8 +39,12 @@ Client registerClient(vector<Client> &customers)
         {
             cout << "CPF incorreto!! Digite novamente!!" << endl;
         }
-        if (success)
+        if (success){
+            client.CPF = cpf;
             break;
+        }else{
+            cout << "CPF já cadastrado!!!" << endl;
+        }
 
     } while (true);
 
@@ -51,7 +54,7 @@ Client registerClient(vector<Client> &customers)
 
     do
     {
-        bool cnhVerify, success = false;
+        bool cnhVerify, success;
         string cnh;
 
         cout << "CNH do cliente (XXXXXXXXXXX): ";
@@ -65,11 +68,10 @@ Client registerClient(vector<Client> &customers)
             {
                 if (it->CNH == cnh)
                 {
-                    cout << "CNH já cadastrada!!!" << endl;
+                    success = false;
                 }
                 else
                 {
-                    client.CNH = cnh;
                     success = true;
                 }
             }
@@ -78,8 +80,13 @@ Client registerClient(vector<Client> &customers)
         {
             cout << "CNH incorreta!! Digite novamente!!" << endl;
         }
-        if (success)
+        if (success){
+            client.CNH = cnh;
             break;
+        }else{
+
+                    cout << "CNH já cadastrada!!!" << endl;
+        }
 
     } while (true);
 
