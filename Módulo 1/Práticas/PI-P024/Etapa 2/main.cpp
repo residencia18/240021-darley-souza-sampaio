@@ -11,6 +11,7 @@ class Pacote;
 class Roteiro;
 class Deslocamento;
 class Pernoite;
+class Persistencia;
 
 class Cliente
 {
@@ -138,6 +139,34 @@ public:
             cliente.setCpf(cpf);
 
             clientes.push_back(cliente);
+        }
+    }
+
+    void listarClientes(vector<Cliente> clientes)
+    {
+        cout << "----- Lista de Clientes -----" << endl
+             << endl;
+        for (Cliente &c : clientes)
+        {
+            cout << "Nome: " << c.getNome() << endl
+                 << "Idade: " << c.getCpf() << endl
+                 << "Cpf: " << c.getCpf() << endl;
+            if (c.getDependentes().size() != NULL)
+            {
+                vector<Dependente> listaDependentes = c.getDependentes();
+                cout << "Dependentes: " << endl;
+                for (Dependente d : listaDependentes)
+                {
+                    cout << "Nome: " << d.getNome() << endl
+                         << "Idade: " << d.getIdade() << endl
+                         << "CPF: " << d.getCpf() << endl
+                         << endl;
+                }
+            }
+            else
+            {
+                cout << endl;
+            }
         }
     }
 };
@@ -294,6 +323,32 @@ public:
     {
         descricao = novaDescricao;
     }
+
+    void inserirRoteiro(vector<Evento> &eventos)
+    {
+        Roteiro roteiro;
+        string nomeRoteiro, localRoteiro, descricaoRoteiro;
+        int duracaoRoteiro;
+
+        cout << "Nome do Roteiro";
+        cin >> nomeRoteiro;
+
+        cout << "Local do Roteiro";
+        cin >> localRoteiro;
+
+        cout << "Descricao Roteiro";
+        cin >> descricaoRoteiro;
+
+        cout << "Duração do Roteiro";
+        cin >> duracaoRoteiro;
+
+        roteiro.setNome(nomeRoteiro);
+        roteiro.setLocal(localRoteiro);
+        roteiro.setDescricao(descricaoRoteiro);
+        roteiro.setDuracao(duracaoRoteiro);
+
+        eventos.push_back(roteiro);
+    }
 };
 
 class Pernoite : public Evento
@@ -323,6 +378,32 @@ public:
     void setDescricao(const string &novaDescricao)
     {
         descricao = novaDescricao;
+    }
+
+    void inserirPernoite(vector<Evento> &eventos)
+    {
+        Pernoite pernoite;
+        string nomePernoite, localPernoite, descricaoPernoite;
+        int duracaoPernoite;
+
+        cout << "Nome Pernoite";
+        cin >> nomePernoite;
+
+        cout << "Local Pernoite";
+        cin >> localPernoite;
+
+        cout << "Descricao Pernoite";
+        cin >> descricaoPernoite;
+
+        cout << "Duração Pernoite";
+        cin >> duracaoPernoite;
+
+        pernoite.setNome(nomePernoite);
+        pernoite.setLocal(localPernoite);
+        pernoite.setDescricao(descricaoPernoite);
+        pernoite.setDuracao(duracaoPernoite);
+
+        eventos.push_back(pernoite);
     }
 };
 
@@ -354,6 +435,37 @@ public:
     {
         descricao = novaDescricao;
     }
+
+    void inserirDeslocamento(vector<Evento> &eventos)
+    {
+        Pernoite deslocamento;
+        string nomeDeslocamento, localDeslocamento, descricaoDeslocamento;
+        int duracaoDeslocamento;
+
+        cout << "Nome Deslocamento";
+        cin >> nomeDeslocamento;
+
+        cout << "Local Deslocamento";
+        cin >> localDeslocamento;
+
+        cout << "Descricao Deslocamento";
+        cin >> descricaoDeslocamento;
+
+        cout << "Duração Deslocamento";
+        cin >> duracaoDeslocamento;
+
+        deslocamento.setNome(nomeDeslocamento);
+        deslocamento.setLocal(localDeslocamento);
+        deslocamento.setDescricao(descricaoDeslocamento);
+        deslocamento.setDuracao(duracaoDeslocamento);
+
+        eventos.push_back(deslocamento);
+    }
+};
+
+class Persistencia
+{
+    
 };
 
 int main(void)
