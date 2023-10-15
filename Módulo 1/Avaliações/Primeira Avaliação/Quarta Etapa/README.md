@@ -6,10 +6,6 @@ Segunda etapa da avaliação realizada em grupo:
 - Ticiana
 - Thais
 
-## Descrição do código
-
-Para esta segunda etapa, foi adicionado ao código um módulo locação, onde o cliente pode alocar carros.
-
 ### Compilação
 
 Para compilar o código basta baixar o arquivo main.cpp e dentro da usa IDE compilar normalmente com as extensões devidas para a linguagem C++.

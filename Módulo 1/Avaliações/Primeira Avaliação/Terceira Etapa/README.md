@@ -8,7 +8,7 @@ Segunda etapa da avaliação realizada em grupo:
 
 ## Descrição do código
 
-Para esta segunda etapa, foi adicionado ao código um módulo locação, onde o cliente pode alocar carros.
+Para a terceira etapa, foi adicionado um módulo ocorrência, onde o será registrado qualquer ocorrência ocorrida com o carro.
 
 ### Compilação
 
