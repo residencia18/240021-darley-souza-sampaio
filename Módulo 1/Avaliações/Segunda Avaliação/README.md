@@ -21,7 +21,9 @@ mostraMenor(): Encontra e exibe o menor valor na lista.
 
 mostraMaior(): Encontra e exibe o maior valor na lista.
 
-listarEmOrdem(): Adicionado como método virtual nas classes de lista, permitindo a listagem em ordem específica.
+listarEmOrdem(): Permite a listagem em ordem específica.
+
+mostrarNElementos(): Permite a listagem de uma quantidade específica de n primeiros elementos de cada lista;
 
 ### 4. Implementação dos Métodos nas Classes de Lista:
 
