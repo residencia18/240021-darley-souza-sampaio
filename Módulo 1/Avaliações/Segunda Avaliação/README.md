@@ -33,5 +33,5 @@ A entrada de dados, permite que o usuário especifique a quantidade de elementos
 
 ## Compilação
 
-Para compilar o código basta baixar o arquivo main.cpp e dentro da sua IDE compilar normalmente com as extensões devidas para a linguagem C++.
+Para compilar o código basta baixar o arquivo main.cpp e dentro da sua IDE compilar normalmente com as devidas extensões para a linguagem C++.
 Se estiver utilizando o terminal basta utilizar o comando <strong>g++ main.cpp -o 'nome-arquivo-executavel'</strong>, após isso, <strong>./'nome-arquivo-executavel'</strong>.
