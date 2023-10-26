@@ -47,6 +47,7 @@ public:
     virtual void mostraMenor() = 0;
     virtual void mostraMaior() = 0;
     virtual void listarEmOrdem() = 0;
+    virtual void mostrarNElementos(int nElementos) = 0;
 };
 
 class ListaNomes : public Lista
@@ -108,6 +109,15 @@ public:
         for (const string &nome : lista)
         {
             cout << nome << endl;
+        }
+    }
+
+    void mostrarNElementos(int nElementos) override
+    {
+        cout << "Primeiros " << nElementos << " nomes: " << endl;
+        for (int i = 0; i < min(nElementos, static_cast<int>(lista.size())); i++)
+        {
+            cout << lista[i] << endl;
         }
     }
 };
@@ -181,6 +191,15 @@ public:
             cout << data.toString() << endl;
         }
     }
+
+    void mostrarNElementos(int nElementos) override
+    {
+        cout << "Primeiras " << nElementos << " datas: " << endl;
+        for (int i = 0; i < min(nElementos, static_cast<int>(lista.size())); i++)
+        {
+            cout << lista[i].toString() << endl;
+        }
+    }
 };
 
 class ListaSalarios : public Lista
@@ -239,6 +258,15 @@ public:
         for (const float &salario : lista)
         {
             cout << salario << endl;
+        }
+    }
+
+    void mostrarNElementos(int nElementos) override
+    {
+        cout << "Primeiros " << nElementos << " salários: " << endl;
+        for (int i = 0; i < min(nElementos, static_cast<int>(lista.size())); i++)
+        {
+            cout << lista[i] << endl;
         }
     }
 };
@@ -301,10 +329,20 @@ public:
             cout << idade << endl;
         }
     }
+
+    void mostrarNElementos(int nElementos) override
+    {
+        cout << "Primeiras " << nElementos << " idades: " << endl;
+        for (int i = 0; i < min(nElementos, static_cast<int>(lista.size())); i++)
+        {
+            cout << lista[i] << endl;
+        }
+    }
 };
 
 int main()
 {
+    int nElementos;
     vector<Lista *> listaDeListas;
 
     ListaNomes listaNomes;
@@ -323,7 +361,11 @@ int main()
     listaIdades.entradaDeDados();
     listaDeListas.push_back(&listaIdades);
 
+    cout << endl << "Quantos primeiros elementos de cada lista quer mostrar?: ";
+    cin >> nElementos;
+
     cout << endl;
+
 
     for (Lista *l : listaDeListas)
     {
@@ -331,6 +373,7 @@ int main()
         l->mostraMenor();
         l->mostraMaior();
         l->listarEmOrdem();
+        l->mostrarNElementos(nElementos);
         cout << endl;
     }
 }
