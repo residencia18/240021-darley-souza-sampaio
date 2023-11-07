@@ -11,6 +11,7 @@ A Residência em Software TIC18 é um programa intensivo e abrangente projetado 
 O repositório está organizado em várias pastas, cada uma correspondendo a um módulo ou atividade específica do curso. Aqui está uma visão geral das pastas contidas neste repositório:
 
 - **Módulo 1**: Capacitação
+- **Módulo 2**: Introdução à Python, .NET, Java e WEB FrontEnd.
 
 
 ## Como Navegar
