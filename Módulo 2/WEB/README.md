@@ -1,6 +1,6 @@
 # Introdução à Front-End
 
-- Visão Geral do Desenvolvimento Front-End.
+- Visão Geral do Desenvolvimento Front-End
 - Conceitos Básicos de HTML, CSS e JavaScript
 - Introdução ao TypeScript
 - Construindo Layouts Responsivos com Flexbox
