@@ -1,4 +1,4 @@
-# Introdução à Linguagem .NET   
+# Introdução à .NET   
 
 Apresentação do curso e introdução ao desenvolvimento backend em C# .NET Core
 Fundamentos da Linguagem C#
