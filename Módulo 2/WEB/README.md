@@ -1,4 +1,4 @@
-# Introdução à Front-End
+# Introdução à Front-End (WEB)
 
 - Visão Geral do Desenvolvimento Front-End
 - Conceitos Básicos de HTML, CSS e JavaScript
