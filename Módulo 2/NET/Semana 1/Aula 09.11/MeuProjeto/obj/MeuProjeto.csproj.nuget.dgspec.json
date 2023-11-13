@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/darley-souza-sampaio/Área de trabalho/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj": {}
+    "/home/darley-souza-sampaio/Área de trabalho/residencia-tic18/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj": {}
   },
   "projects": {
-    "/home/darley-souza-sampaio/Área de trabalho/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj": {
+    "/home/darley-souza-sampaio/Área de trabalho/residencia-tic18/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/darley-souza-sampaio/Área de trabalho/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj",
+        "projectUniqueName": "/home/darley-souza-sampaio/Área de trabalho/residencia-tic18/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj",
         "projectName": "MeuProjeto",
-        "projectPath": "/home/darley-souza-sampaio/Área de trabalho/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj",
+        "projectPath": "/home/darley-souza-sampaio/Área de trabalho/residencia-tic18/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/MeuProjeto.csproj",
         "packagesPath": "/home/darley-souza-sampaio/.nuget/packages/",
-        "outputPath": "/home/darley-souza-sampaio/Área de trabalho/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/obj/",
+        "outputPath": "/home/darley-souza-sampaio/Área de trabalho/residencia-tic18/residencia-cepedi/Módulo 2/NET/Semana 1/Aula 09.11/MeuProjeto/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/darley-souza-sampaio/.nuget/NuGet/NuGet.Config"
