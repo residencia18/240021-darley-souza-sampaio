@@ -1,0 +1,30 @@
+package calculadora;
+
+public class Calculadora {
+	private float value1;
+	private float value2;
+	private float result;
+	
+	public float getValue1() {
+		return value1;
+	}
+	public void setValue1(float value1) {
+		this.value1 = value1;
+	}
+	public float getValue2() {
+		return value2;
+	}
+	public void setValue2(float value2) {
+		this.value2 = value2;
+	}
+	public float getResult() {
+		return result;
+	}
+	public void setResult(float result) {
+		this.result = result;
+	}
+	
+	public float sum(float _value1, float _value2) {
+		
+	}
+}
