@@ -1,4 +1,10 @@
 ### Java ###
+
+# Folders
+
+.metadata
+.sonarlint
+
 # Compiled class file
 *.class
 
