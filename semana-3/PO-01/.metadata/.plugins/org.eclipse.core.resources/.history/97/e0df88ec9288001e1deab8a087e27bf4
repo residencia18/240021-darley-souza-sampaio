@@ -1,0 +1,62 @@
+package calculadora;
+
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		float value1;
+		float value2;
+		float result;
+		int option;
+		Scanner scanner = new Scanner(System.in);
+
+		do {
+			System.out.println("\n" + "1 - Soma" + "\n" + "2 - Subtração" + "\n" + "3 - Divisão"
+					+ "\n" + "4 - Multiplicação" + "\n" + "5 - Sair" + "\n");
+			System.out.print("Escolha uma opção: ");
+
+			option = scanner.nextInt();
+
+			switch (option) {
+			case 1:
+				Calculadora newSum = new Calculadora();
+				newSum.setValue1(value1 = scanner.nextFloat());
+				newSum.setValue2(value2 = scanner.nextFloat());
+				result = newSum.sum();
+				System.out.println("Resultado: " + result + "\n");
+				break;
+			case 2:
+				Calculadora newSub = new Calculadora();
+				newSub.setValue1(value1 = scanner.nextFloat());
+				newSub.setValue2(value2 = scanner.nextFloat());
+				result = newSub.sub();
+				System.out.println("Resultado: " + result  + "\n");
+				break;
+			case 3:
+				Calculadora newDiv = new Calculadora();
+				newDiv.setValue1(value1 = scanner.nextFloat());
+				newDiv.setValue2(value2 = scanner.nextFloat());
+				result = newDiv.div();
+				System.out.println("Resultado: " + result  + "\n");
+				break;
+			case 4:
+				Calculadora newMult = new Calculadora();
+				newMult.setValue1(value1 = scanner.nextFloat());
+				newMult.setValue2(value2 = scanner.nextFloat());
+				if (newMult.getValue2() == 0) {
+					System.out.println("Erro: divisão por zero" + "\n");
+				} else {
+					result = newMult.mult();
+					System.out.println("Resultado: " + result  + "\n");
+				}
+				break;
+
+			default:
+				System.out.println("Opção inválida");
+			}
+
+		} while (option != 5);
+
+		scanner.close();
+	}
+}

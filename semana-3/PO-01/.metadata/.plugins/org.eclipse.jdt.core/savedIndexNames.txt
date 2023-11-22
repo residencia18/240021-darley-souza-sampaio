@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+C:\Users\37533205871\Desktop\residencia\semana-3\PO-01\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+4178681673.index
+1038049441.index

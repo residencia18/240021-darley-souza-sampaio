@@ -1,0 +1,9 @@
+
+à
+java:S1192""TDefine a constant instead of duplicating this literal "Resultado: %.2f%n%n" 4 times.b 00602de67f9c17a81045e734e77050c2h
+ç
+java:S1192"YDefine a constant instead of duplicating this literal "Digite o segundo valor: " 4 times.b 4972db528c8bb49cb1ad0a30757ea7fch
+é
+java:S1192"ZDefine a constant instead of duplicating this literal "Digite o primeiro valor: " 4 times.b 1e6f7c6a1ea1d58a469718695b8584c4h
+Ü
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.b fad58de7366495db4650cfefac2fcd61h
