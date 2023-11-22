@@ -1,5 +1,5 @@
 # Atividade JB - P001
-## Alunos: Ticiana H. S. Paternostro & Danrley Sampaio
+## Alunos: Ticiana H. S. Paternostro & Darley Sampaio
 
 ### Pesquisa:
 
