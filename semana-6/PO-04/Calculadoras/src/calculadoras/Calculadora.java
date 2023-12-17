@@ -8,7 +8,7 @@ public class Calculadora {
 		} else if (a instanceof Double || b instanceof Double) {
 			return (T) (Object) (a.doubleValue() + b.doubleValue());
 		} else {
-			throw new IllegalArgumentException("Tipos de dados incompatíveis");
+			throw new IllegalArgumentException("Tipos de dados incompatï¿½veis");
 		}
 	}
 
@@ -19,7 +19,7 @@ public class Calculadora {
 		} else if (a instanceof Double || b instanceof Double) {
 			return (T) (Object) (a.doubleValue() - b.doubleValue());
 		} else {
-			throw new IllegalArgumentException("Tipos de dados incompatíveis");
+			throw new IllegalArgumentException("Tipos de dados incompatï¿½veis");
 		}
 	}
 
@@ -30,7 +30,7 @@ public class Calculadora {
 		} else if (a instanceof Double || b instanceof Double) {
 			return (T) (Object) (a.doubleValue() * b.doubleValue());
 		} else {
-			throw new IllegalArgumentException("Tipos de dados incompatíveis");
+			throw new IllegalArgumentException("Tipos de dados incompatï¿½veis");
 		}
 	}
 
@@ -43,7 +43,7 @@ public class Calculadora {
 				} else if (a instanceof Double || b instanceof Double) {
 					return (T) (Object) (a.doubleValue() / b.doubleValue());
 				} else {
-					throw new IllegalArgumentException("Tipos de dados incompatíveis");
+					throw new IllegalArgumentException("Tipos de dados incompatï¿½veis");
 				}
 			} else
 				throw new DivisionByZeroException();
@@ -61,7 +61,7 @@ public class Calculadora {
 				if (a instanceof Integer && b instanceof Integer) {
 					return (T) (Object) (a.intValue() % b.intValue());
 				} else {
-					throw new IllegalArgumentException("Tipos de dados incompatíveis");
+					throw new IllegalArgumentException("Tipos de dados incompatï¿½veis");
 				}
 			} else
 				throw new DivisionByZeroException();
