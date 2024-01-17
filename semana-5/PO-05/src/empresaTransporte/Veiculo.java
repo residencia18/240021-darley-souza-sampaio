@@ -36,7 +36,9 @@ public class Veiculo {
 	}
 
 	void exibirInformacoes() {
-		System.out.println("\nTipo: " + this.tipo + "\n" + "Código: " + this.codigo + "\nPlaca: " + this.placa + "\n");
+		System.out.println("-----------------------------------------------");
+		System.out.println("Código: " + this.codigo + "\nTipo: " + this.tipo + "\nPlaca: " + this.placa);
+		System.out.println("-----------------------------------------------");
 	}
 
 }
