@@ -36,10 +36,7 @@ public class PontoParada {
 	}
 
 	public void exibirInformacoes() {
-		System.out.println(
-				"Código: " + this.codigo + "\n" +
-				"Localização: " + this.localizacao + "\n" +
-				"Referência: " + this.referencias + "\n"
-				);
+		System.out.println("Código PP: " + this.codigo + "\nLocalização: " + this.localizacao + "\nReferência: "
+				+ this.referencias + "\n");
 	}
 }

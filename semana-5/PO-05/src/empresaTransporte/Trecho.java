@@ -47,14 +47,14 @@ public class Trecho {
 	}
 
 	public void exibirInformacoes() {
-		System.out.println("---------------------------------------");
-		System.out.println("Código: " + this.codigo);
+		System.out.println("-----------------------------------------------");
+		System.out.println("Código Trecho: " + this.codigo);
 		System.out.println("Ponto de Origem: ");
 		this.pontoDeParadaOrigem.exibirInformacoes();
 		System.out.println("Ponto de Destino: ");
 		this.pontoDeParadaDestino.exibirInformacoes();
-		System.out.println("Tempo Estimado: " + this.intervaloEstimado + "\n");
-		System.out.println("---------------------------------------");
+		System.out.println("Tempo Estimado: " + this.intervaloEstimado + " minutos\n");
+		System.out.println("-----------------------------------------------");
 	}
 
 }

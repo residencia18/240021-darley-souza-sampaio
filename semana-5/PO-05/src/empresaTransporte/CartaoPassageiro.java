@@ -35,4 +35,12 @@ public class CartaoPassageiro {
 		this.tipoCartao = tipoCartao;
 	}
 
+	public void utilizaCartao(double valor) {
+		this.saldo = this.saldo - valor;
+	}
+	
+	public void recarregarCartao(double valor) {
+		this.saldo = this.saldo + valor;
+	}
+	
 }
