@@ -25,6 +25,17 @@ public class App {
 	private static List<Jornada> jornadas = new ArrayList<>();
 
 	public static void main(String[] args) {
+		GerenciadorArquivos.CarregarArquivo(veiculos, "veiculos.dat");
+		GerenciadorArquivos.CarregarArquivo(passageiros, "passageiros.dat");
+		GerenciadorArquivos.CarregarArquivo(motoristas, "motoristas.dat");
+		GerenciadorArquivos.CarregarArquivo(cobradores, "cobradores.dat");
+		GerenciadorArquivos.CarregarArquivo(pontos, "pontos.dat");
+		GerenciadorArquivos.CarregarArquivo(trechos, "trechos.dat");
+		GerenciadorArquivos.CarregarArquivo(trajetos, "trajetos.dat");
+		GerenciadorArquivos.CarregarArquivo(jornadas, "jornadas.dat");
+
+		System.out.println();
+
 		String opcao = null;
 		do {
 			try {
@@ -82,6 +93,7 @@ public class App {
 			}
 		} while (!opcao.equals("10"));
 
+		scanner.close();
 	}
 
 	public static String gerarCodigoAleatorio() {
