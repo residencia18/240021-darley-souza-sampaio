@@ -6,9 +6,12 @@ import java.util.Scanner;
 public class App {
 
 	public static void main(String[] args) {
+		//crie os arquivos de entrada e saída para utilizar
+		//os arquivos são entrada.txt, saida.txt, origem.txt e destino.txt
 
 		// lerArquivo();
-		salvaArquivo();
+		//salvaArquivo();
+		//copiaArquivo();
 
 	}
 
@@ -57,4 +60,29 @@ public class App {
 			e.printStackTrace();
 		}
 	}
+	
+	 private static void copiaArquivo() {
+	        String nomeArquivoOrigem = "origem.txt";
+	        String nomeArquivoDestino = "destino.txt";
+
+	        try {
+	            BufferedReader leitor = new BufferedReader(new FileReader(nomeArquivoOrigem));
+	            BufferedWriter escritor = new BufferedWriter(new FileWriter(nomeArquivoDestino));
+
+	            String linha;
+
+	            while ((linha = leitor.readLine()) != null) {
+	                escritor.write(linha);
+	                escritor.newLine();
+	            }
+
+	            leitor.close();
+	            escritor.close();
+
+	            System.out.println("Conteúdo do arquivo copiado com sucesso de " + nomeArquivoOrigem + " para " + nomeArquivoDestino);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
 }
