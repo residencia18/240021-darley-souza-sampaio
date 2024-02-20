@@ -35,11 +35,11 @@ public class PagamentoDao {
 
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+
 			return false;
 		}
 	}
-	
+
 	public static Pagamento readUnique(Pagamento pagamentoR, Connection conn) throws Exception {
 		final String query = "SELECT * FROM Pagamento WHERE matricula = ?";
 		try {
@@ -59,7 +59,7 @@ public class PagamentoDao {
 
 			return pagamento;
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 			return null;
 		}
 	}
@@ -85,7 +85,7 @@ public class PagamentoDao {
 
 			return pagamentos;
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 			return null;
 		}
 	}

@@ -23,9 +23,8 @@ public class ImovelDao {
 
 			ps.execute();
 			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+		} catch (SQLException e) {
+			throw e;
 		}
 	}
 
@@ -49,8 +48,9 @@ public class ImovelDao {
 				imoveis.add(Imovel);
 			}
 			return imoveis;
+		} catch(SQLException e) {
+			return null;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -76,7 +76,7 @@ public class ImovelDao {
 
 			return imovel;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			 
 			return null;
 		}
 	}
@@ -104,7 +104,7 @@ public class ImovelDao {
 
 			return imoveis;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			 
 			return null;
 		}
 	}
@@ -134,8 +134,8 @@ public class ImovelDao {
 
 				return rowsAffected > 0;
 			}
-		} catch (Exception e) {	
-			e.printStackTrace();
+		} catch(SQLException e) {	
+			 
 			return false;
 		}
 	}
@@ -150,7 +150,7 @@ public class ImovelDao {
 
 			return rowsAffected > 0;
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 			return false;
 		}
 	}

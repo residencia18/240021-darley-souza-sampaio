@@ -52,13 +52,13 @@ public class Cliente implements Serializable {
 		if (cpf != null) {
 
 			if (!validationCpf.isValidCpf(cpf)) {
-				throw new Exception("CPF inválido. Formato correto é XXX.XXX.XXX-XX.");
+				throw new Exception("CPF inválido. Verifique se o CPF é válido ou se está no formato correto.\n");
 			}
 
 			this.cpf = cpf;
 
 		} else {
-			throw new Exception("O CPF não pode ser nulo.");
+			throw new Exception("O CPF não pode ser nulo.\n");
 		}
 
 	}
