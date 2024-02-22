@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.dansoft.empresaCoelho.Cliente;
-import com.dansoft.empresaCoelho.Imovel;
+import com.dansoft.empresaCoelhoClasses.Cliente;
+import com.dansoft.empresaCoelhoClasses.Imovel;
 
 public class ImovelDao {
 	public static boolean create(Imovel imovel, Cliente cliente, Connection conn) throws SQLException {

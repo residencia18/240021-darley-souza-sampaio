@@ -1,4 +1,4 @@
-package com.dansoft.empresaCoelho;
+package com.dansoft.empresaCoelhoClasses;
 
 import java.io.Serializable;
 

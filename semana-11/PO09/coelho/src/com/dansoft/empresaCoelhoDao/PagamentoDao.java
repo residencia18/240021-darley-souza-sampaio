@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.dansoft.empresaCoelho.Pagamento;
-import com.dansoft.empresaCoelho.Fatura;
+import com.dansoft.empresaCoelhoClasses.Fatura;
+import com.dansoft.empresaCoelhoClasses.Pagamento;
 
 public class PagamentoDao {
 	public static boolean create(Pagamento pagamento, Fatura fatura, boolean quitado, Connection conn)

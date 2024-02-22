@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.dansoft.empresaCoelho.Fatura;
-import com.dansoft.empresaCoelho.Imovel;
+import com.dansoft.empresaCoelhoClasses.Fatura;
+import com.dansoft.empresaCoelhoClasses.Imovel;
 
 public class FaturaDao {
 	public static boolean create(Fatura fatura, Imovel imovel, Connection conn) throws SQLException {

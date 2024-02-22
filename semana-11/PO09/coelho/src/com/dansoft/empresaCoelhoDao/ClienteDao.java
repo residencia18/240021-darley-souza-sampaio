@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
-import com.dansoft.empresaCoelho.Cliente;
+import com.dansoft.empresaCoelhoClasses.Cliente;
 
 public class ClienteDao {
 	public static boolean create(Cliente cliente, Connection conn) throws SQLException {

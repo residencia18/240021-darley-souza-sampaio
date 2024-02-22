@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

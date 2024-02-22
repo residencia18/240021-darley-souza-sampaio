@@ -1,4 +1,4 @@
-package com.dansoft.empresaCoelho;
+package com.dansoft.empresaCoelhoClasses;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +11,6 @@ public class Pagamento implements Serializable {
 	private double valor;
 
 	public Pagamento(Date data, double valor) {
-		super();
 		this.data = data;
 		this.valor = valor;
 	}
@@ -62,9 +61,9 @@ public class Pagamento implements Serializable {
 
 	public void exibirInformacoes() {
 		System.out.println("--------------- Pagamento ---------------");
-		System.out.println("Matrícula: " + this.matricula + "\nData: " + this.data + "\nValor: " + this.valor);
+		System.out.println("Matrícula: " + this.matricula + "\nData: " + this.data + "\nValor: R$" + this.valor);
 		System.out.println("-----------------------------------------\n");
-		
+
 	}
 
 }

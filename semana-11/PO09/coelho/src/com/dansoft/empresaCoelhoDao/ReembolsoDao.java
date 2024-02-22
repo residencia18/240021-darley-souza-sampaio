@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.dansoft.empresaCoelho.Pagamento;
-import com.dansoft.empresaCoelho.Reembolso;
+import com.dansoft.empresaCoelhoClasses.Pagamento;
+import com.dansoft.empresaCoelhoClasses.Reembolso;
 
 public class ReembolsoDao {
 	public static boolean create(Reembolso reembolso, Pagamento pagamento, Connection conn) throws SQLException {

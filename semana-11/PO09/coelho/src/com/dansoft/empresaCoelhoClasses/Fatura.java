@@ -1,4 +1,4 @@
-package com.dansoft.empresaCoelho;
+package com.dansoft.empresaCoelhoClasses;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,8 +28,6 @@ public class Fatura implements Serializable {
 
 	public Fatura() {
 	}
-	
-	
 
 	public Integer getId() {
 		return id;
@@ -120,7 +118,7 @@ public class Fatura implements Serializable {
 			throw new Exception("Pagamentos não deve ser nulo.");
 		this.pagamentos = pagamentos;
 	}
-	
+
 	public void calculaValor(double ultimaLeitura, double penultimaLeitura) {
 		this.valor = (ultimaLeitura - penultimaLeitura) * 10;
 	}
@@ -128,16 +126,16 @@ public class Fatura implements Serializable {
 	public void realizarPagamento(double valor, Pagamento pagamento) throws Exception {
 		if (valor == 0)
 			throw new Exception("O valor a ser pago tem que ser maior que 0.");
-		
-		if(pagamento == null)
+
+		if (pagamento == null)
 			throw new Exception("Pagamento não deve ser nulo.");
 
-		if(pagamentos.isEmpty()) {
+		if (pagamentos.isEmpty()) {
 			if (valor >= this.valor) {
 				this.quitado = true;
 			}
-		}else {
-			if(valor >= (this.valor - calculaTotalPagamentos())) {				
+		} else {
+			if (valor >= (this.valor - calculaTotalPagamentos())) {
 				this.quitado = true;
 			}
 		}
@@ -154,14 +152,13 @@ public class Fatura implements Serializable {
 
 	public void exibirInformacoes() {
 		System.out.println("-------------- Fatura -------------------");
-		System.out.println("Matrícula: " + this.matricula + "\nData: " + this.data + "\nÚltima Leitura: " + this.ultimaLeitura
-				+ "\nPenúltima Leitura: " + this.penultimaLeitura + "\nValor: " + this.valor);
+		System.out.println("Matrícula: " + this.matricula + "\nData: " + this.data + "\nÚltima Leitura: "
+				+ this.ultimaLeitura + "\nPenúltima Leitura: " + this.penultimaLeitura + "\nValor: R$" + this.valor);
 		if (this.quitado)
 			System.out.println("Quitado: Sim\n");
 		else
 			System.out.println("Quitado: Não\n");
 		System.out.println("----------------------------------------");
 	}
-	
 
 }
