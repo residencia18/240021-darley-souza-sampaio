@@ -2,6 +2,7 @@ package com.dansoft.empresaCoelho;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -151,8 +152,13 @@ public class App {
 
 			ClienteDao.create(clienteAdd, conn);
 			System.out.println("Cliente cadastrado com sucesso.\n");
+
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.out.println("\nErro: Cliente com mesmo CPF já cadastrado.\n");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 
 	}
@@ -222,8 +228,12 @@ public class App {
 
 				System.out.println("Cliente editado com sucesso.\n");
 			}
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.out.println("\nErro: Cliente com mesmo CPF já cadastrado.\n");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 
@@ -249,25 +259,34 @@ public class App {
 			ClienteDao.delete(cliente, conn);
 
 			System.out.println("Cliente deletado com sucesso.\n");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 
-	private static void listarClientes() throws SQLException {
-		ArrayList<Cliente> clientes = null;
-		clientes = ClienteDao.readAll(conn);
+	private static void listarClientes() {
+		try {
 
-		if (clientes == null) {
-			System.out.println("Nenhum cliente cadastrado.\n");
-			return;
-		}
+			ArrayList<Cliente> clientes = null;
+			clientes = ClienteDao.readAll(conn);
 
-		System.out.println("------------- Todos os Clientes -------------\n");
-		for (Cliente cliente : clientes) {
-			cliente.exibirInformacoes();
+			if (clientes == null) {
+				System.out.println("Nenhum cliente cadastrado.\n");
+				return;
+			}
+
+			System.out.println("------------- Todos os Clientes -------------\n");
+			for (Cliente cliente : clientes) {
+				cliente.exibirInformacoes();
+			}
+			System.out.println("-----------------------------------------------");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
+		} catch (Exception e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
-		System.out.println("-----------------------------------------------");
 	}
 
 	private static void menuImovel() throws Exception {
@@ -343,8 +362,12 @@ public class App {
 
 			ImovelDao.create(imovelAdd, cliente, conn);
 			System.out.println("Imóvel cadastrado com sucesso.\n");
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.out.println("\nErro: Imóvel com mesmo endereço já cadastrado.\n");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 
 	}
@@ -426,8 +449,12 @@ public class App {
 
 				System.out.println("Imóvel editado com sucesso.\n");
 			}
+		} catch (SQLIntegrityConstraintViolationException e) {
+			System.out.println("\nErro: Imóvel com mesmo endereço já cadastrado.\n");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 
@@ -448,61 +475,77 @@ public class App {
 			ImovelDao.delete(imovel, conn);
 
 			System.out.println("Cliente deletado com sucesso.\n");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 
-	private static void listarImoveis() throws SQLException {
-		ArrayList<Imovel> imoveis = null;
-		imoveis = ImovelDao.readAll(conn);
+	private static void listarImoveis() {
+		try {
 
-		if (imoveis.isEmpty()) {
-			System.out.println("Nenhum imóvel cadastrado.\n");
-			return;
-		}
+			ArrayList<Imovel> imoveis = null;
+			imoveis = ImovelDao.readAll(conn);
 
-		System.out.println("------------- Todos os Imóveis -------------\n");
-		for (Imovel imovel : imoveis) {
-			imovel.exibirInformacoes();
+			if (imoveis.isEmpty()) {
+				System.out.println("Nenhum imóvel cadastrado.\n");
+				return;
+			}
+
+			System.out.println("------------- Todos os Imóveis -------------\n");
+			for (Imovel imovel : imoveis) {
+				imovel.exibirInformacoes();
+			}
+			System.out.println("-----------------------------------------------");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
+		} catch (Exception e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
-		System.out.println("-----------------------------------------------");
 	}
 
-	private static void listarImoveisPorCliente() throws Exception {
-		Validations validationCpf = new Validations();
-		List<Imovel> imoveis = null;
-		Cliente cliente = null;
+	private static void listarImoveisPorCliente() {
+		try {
 
-		System.out.print("Infome o CPF do morador: ");
-		String cpfMorador = scanner.nextLine();
+			Validations validationCpf = new Validations();
+			List<Imovel> imoveis = null;
+			Cliente cliente = null;
 
-		if (!validationCpf.isValidCpf(cpfMorador)) {
-			System.out.println("CPF inválido.\n");
-			return;
+			System.out.print("Infome o CPF do morador: ");
+			String cpfMorador = scanner.nextLine();
+
+			if (!validationCpf.isValidCpf(cpfMorador)) {
+				System.out.println("CPF inválido.\n");
+				return;
+			}
+
+			cliente = ClienteDao.readUnique(cpfMorador, conn);
+
+			if (cliente == null) {
+				System.out.println("Cliente não encontrado.\n");
+				return;
+			}
+
+			imoveis = ImovelDao.readAllPerClient(cliente, conn);
+
+			if (imoveis == null) {
+				System.out.println("Esse cliente não possui imóveis cadastrados.\n");
+				return;
+			}
+
+			System.out.println("------------- Imóveis do Cliente -------------\n");
+			cliente.exibirInformacoes();
+			System.out.println();
+			for (Imovel imovel : imoveis) {
+				imovel.exibirInformacoes();
+			}
+			System.out.println("-----------------------------------------------");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
+		} catch (Exception e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
-
-		cliente = ClienteDao.readUnique(cpfMorador, conn);
-
-		if (cliente == null) {
-			System.out.println("Cliente não encontrado.\n");
-			return;
-		}
-
-		imoveis = ImovelDao.readAllPerClient(cliente, conn);
-
-		if (imoveis == null) {
-			System.out.println("Esse cliente não possui imóveis cadastrados.\n");
-			return;
-		}
-
-		System.out.println("------------- Imóveis do Cliente -------------\n");
-		cliente.exibirInformacoes();
-		System.out.println();
-		for (Imovel imovel : imoveis) {
-			imovel.exibirInformacoes();
-		}
-		System.out.println("-----------------------------------------------");
 	}
 
 	private static void menuFatura() {
@@ -567,8 +610,13 @@ public class App {
 			data = leituraData(dataString);
 			faturaAdd.setData(data);
 
-			System.out.print("Última Leitura: ");
+			System.out.print("Leitura: ");
 			String ultimaLeitura = scanner.nextLine();
+
+			if (!isInt(ultimaLeitura)) {
+				System.out.println("A leitura deve conter somente números.\n");
+				return;
+			}
 
 			int ultimaLeituraInt = Integer.parseInt(ultimaLeitura);
 			int penultimaLeituraInt = Integer.parseInt(imovel.getUltimaLeitura());
@@ -589,8 +637,10 @@ public class App {
 
 			FaturaDao.create(faturaAdd, imovel, conn);
 			System.out.println("Fatura cadastrada com sucesso.\n");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 
 	}
@@ -622,8 +672,10 @@ public class App {
 				fatura.exibirInformacoes();
 			}
 			System.out.println("-----------------------------------------------");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("Erro: " + e.getMessage());
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 
@@ -659,8 +711,10 @@ public class App {
 					fatura.exibirInformacoes();
 			}
 			System.out.println("-----------------------------------------------------");
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("Erro: " + e.getMessage());
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 
@@ -697,7 +751,7 @@ public class App {
 			FaturaDao.update(fatura, conn);
 			System.out.println("Fatura cadastrada com sucesso.\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 
 	}
@@ -760,7 +814,7 @@ public class App {
 			}
 
 			if (fatura.getQuitado()) {
-				System.out.println("Essa fatura já foi paga");
+				System.out.println("Essa fatura já foi paga.\n");
 				return;
 			}
 
@@ -774,19 +828,28 @@ public class App {
 
 			pagamento.setData(data);
 
-			System.out.print("Valor a pagar: ");
-			double valorPagamento = scanner.nextDouble();
-			scanner.nextLine();
+			double valorPagamento;
+			while (true) {
+				System.out.print("Valor a pagar: ");
+				if (scanner.hasNextDouble()) {
+					valorPagamento = scanner.nextDouble();
+					scanner.nextLine();
+					break;
+				}
+				System.out.println("Por favor, insira um valor numérico.");
+			}
 
 			pagamento.setValor(valorPagamento);
 
-			List<Pagamento> pagamentos = null;
+			List<Pagamento> pagamentos = new ArrayList<Pagamento>();
 			pagamentos = PagamentoDao.readAll(fatura, conn);
 
 			if (pagamentos.isEmpty()) {
 				if (valorPagamento >= fatura.getValor()) {
-					if (valorPagamento == fatura.getValor())
+					if (valorPagamento == fatura.getValor()) {
 						PagamentoDao.create(pagamento, fatura, true, conn);
+						System.out.println("Pagamento realizado com sucesso. Fatura quitada.\n");
+					}
 					if (valorPagamento > fatura.getValor()) {
 						PagamentoDao.create(pagamento, fatura, true, conn);
 						pagamento = PagamentoDao.readUnique(pagamento, conn);
@@ -794,33 +857,44 @@ public class App {
 						reembolso.setValor(valorPagamento - fatura.getValor());
 						reembolso.setData(data);
 						ReembolsoDao.create(reembolso, pagamento, conn);
+						System.out.println("Pagamento realizado com sucesso. Fatura quitada.\n"
+								+ "Houve um reembolso de R$" + reembolso.getValor() + ".\n");
 					}
 				} else {
 					PagamentoDao.create(pagamento, fatura, false, conn);
+					System.out.println("Pagamento realizado com sucesso.\n");
 				}
 			} else {
 				double valorJaPago = 0;
 				for (Pagamento pagamento2 : pagamentos) {
 					valorJaPago = valorJaPago + pagamento2.getValor();
+					System.out.println(valorJaPago);
 				}
-				if (valorPagamento >= valorJaPago) {
-					if (valorPagamento == valorJaPago)
+				if (valorPagamento >= fatura.getValor() - valorJaPago) {
+					if (valorPagamento == fatura.getValor() - valorJaPago) {
 						PagamentoDao.create(pagamento, fatura, true, conn);
-					if (valorPagamento > valorJaPago) {
+						System.out.println("Pagamento realizado com sucesso. Fatura quitada.\n");
+					}
+					if (valorPagamento > pagamento.getValor() - valorJaPago) {
 						PagamentoDao.create(pagamento, fatura, true, conn);
 						pagamento = PagamentoDao.readUnique(pagamento, conn);
 						Reembolso reembolso = new Reembolso();
-						reembolso.setValor(valorPagamento - valorJaPago);
+						reembolso.setValor(valorPagamento - (fatura.getValor() - valorJaPago));
 						reembolso.setData(data);
 						ReembolsoDao.create(reembolso, pagamento, conn);
+						System.out.println("Pagamento realizado com sucesso. Fatura quitada.\n"
+								+ "Houve um reembolso de R$" + reembolso.getValor() + ".\n");
 					}
 				} else {
 					PagamentoDao.create(pagamento, fatura, false, conn);
+					System.out.println("Pagamento realizado com sucesso.\n");
 				}
 
 			}
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 
@@ -857,7 +931,6 @@ public class App {
 				return;
 			}
 
-
 			System.out.println("----------------- Todos os Pagamentos -----------------\n");
 			fatura.exibirInformacoes();
 			for (Pagamento pagamento : pagamentos) {
@@ -869,8 +942,10 @@ public class App {
 			}
 			System.out.println("-----------------------------------------------------");
 
+		} catch (SQLException e) {
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage() + "\n");
+			System.out.println("\nErro: " + e.getMessage() + "\n");
 		}
 	}
 

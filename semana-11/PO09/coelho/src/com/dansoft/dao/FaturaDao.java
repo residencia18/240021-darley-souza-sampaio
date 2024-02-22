@@ -35,13 +35,12 @@ public class FaturaDao {
 			psI.execute();
 			psF.execute();
 			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
 			return false;
 		}
 	}
 
-	public static ArrayList<Fatura> readAll(Imovel imovel, Connection conn) throws Exception {
+	public static ArrayList<Fatura> readAll(Imovel imovel, Connection conn) throws SQLException {
 		final String query = "SELECT * FROM Fatura WHERE Imovel_id = ?";
 		ArrayList<Fatura> faturas = new ArrayList<Fatura>();
 		Fatura fatura = null;
@@ -66,7 +65,8 @@ public class FaturaDao {
 
 			return faturas;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return null;
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -94,7 +94,6 @@ public class FaturaDao {
 
 			return fatura;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -113,8 +112,7 @@ public class FaturaDao {
 
 			return rowsAffected > 0;
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
 			return false;
 		}
 	}
