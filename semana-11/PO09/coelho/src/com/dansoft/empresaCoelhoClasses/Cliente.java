@@ -1,4 +1,4 @@
-package com.dansoft.empresaCoelho;
+package com.dansoft.empresaCoelhoClasses;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
@@ -11,6 +11,16 @@ public class Cliente implements Serializable {
 	private Integer id;
 	private String nome;
 	private String cpf;
+
+	public Cliente(Integer id, String nome, String cpf) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+	}
+
+	public Cliente() {
+	}
 
 	public int getId() {
 		return id;
@@ -52,13 +62,13 @@ public class Cliente implements Serializable {
 		if (cpf != null) {
 
 			if (!validationCpf.isValidCpf(cpf)) {
-				throw new Exception("CPF inválido. Formato correto é XXX.XXX.XXX-XX.");
+				throw new Exception("CPF inválido. Verifique se o CPF é válido ou se está no formato correto.\n");
 			}
 
 			this.cpf = cpf;
 
 		} else {
-			throw new Exception("O CPF não pode ser nulo.");
+			throw new Exception("O CPF não pode ser nulo.\n");
 		}
 
 	}

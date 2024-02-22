@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.dansoft.empresaCoelho.Pagamento;
-import com.dansoft.empresaCoelho.Fatura;
+import com.dansoft.empresaCoelhoClasses.Fatura;
+import com.dansoft.empresaCoelhoClasses.Pagamento;
 
 public class PagamentoDao {
 	public static boolean create(Pagamento pagamento, Fatura fatura, boolean quitado, Connection conn)
@@ -35,11 +35,11 @@ public class PagamentoDao {
 
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+
 			return false;
 		}
 	}
-	
+
 	public static Pagamento readUnique(Pagamento pagamentoR, Connection conn) throws Exception {
 		final String query = "SELECT * FROM Pagamento WHERE matricula = ?";
 		try {
@@ -59,7 +59,7 @@ public class PagamentoDao {
 
 			return pagamento;
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 			return null;
 		}
 	}
@@ -85,7 +85,7 @@ public class PagamentoDao {
 
 			return pagamentos;
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 			return null;
 		}
 	}

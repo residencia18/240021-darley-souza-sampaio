@@ -1,4 +1,4 @@
-package com.dansoft.empresaCoelho;
+package com.dansoft.empresaCoelhoClasses;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -52,7 +52,7 @@ public class Reembolso implements Serializable {
 
 	public void exibirInformacoes() {
 		System.out.println("--------------- Reembolso ---------------");
-		System.out.println("Data: " + this.data + "\nValor: " + this.valor);
+		System.out.println("Data: " + this.data + "\nValor: R$" + this.valor);
 		System.out.println("-----------------------------------------\n");
 	}
 

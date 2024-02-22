@@ -1,4 +1,4 @@
-package com.dansoft.dao;
+package com.dansoft.empresaCoelhoDao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -6,16 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.dansoft.empresaCoelho.Pagamento;
-import com.dansoft.empresaCoelho.Reembolso;
+import com.dansoft.empresaCoelhoClasses.Pagamento;
+import com.dansoft.empresaCoelhoClasses.Reembolso;
 
 public class ReembolsoDao {
-	public static boolean create(Reembolso reembolso, Pagamento pagamento, Connection conn)
-			throws SQLException {
+	public static boolean create(Reembolso reembolso, Pagamento pagamento, Connection conn) throws SQLException {
 		final String queryReembolso = "INSERT INTO Reembolso (data, valor, Pagamento_id) VALUES (?, ?, ?)";
 		try {
 			PreparedStatement psR = conn.prepareStatement(queryReembolso);
-			
+
 			Date dataSql = new Date(reembolso.getData().getTime());
 
 			psR.setDate(1, dataSql);
@@ -25,7 +24,7 @@ public class ReembolsoDao {
 
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+
 			return false;
 		}
 	}
@@ -47,7 +46,7 @@ public class ReembolsoDao {
 
 			return reembolso;
 		} catch (SQLException e) {
-			e.printStackTrace();
+
 			return null;
 		}
 	}
