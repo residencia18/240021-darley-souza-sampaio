@@ -60,18 +60,20 @@ Para executar o sistema, é necessário ter o ambiente de desenvolvimento config
 
    ```
    git clone <URL_DO_REPOSITÓRIO>
+
+   Ou baixe o arquivo o arquivo .zip
    ```
 
-2. Navegue até o diretório do projeto:
+2. Importe o projeto:
 
    ```
-   Importe o projeto Maven
+   Importe o projeto como Maven
    ```
 
 3. Execute o projeto Spring Boot:
 
    ```
-   Executo o arquivo principal do projeto
+   Execute o arquivo principal do projeto
    ```
 
 4. Após a execução bem-sucedida, você pode acessar as consultas utilizando os endpoints mencionados acima.
