@@ -1,12 +1,16 @@
 package com.dansoft.redesocial.controller.Form;
 
 import com.dansoft.redesocial.model.Usuario;
+import com.dansoft.redesocial.validations.Validations;
 
 public class UsuarioForm {
 	private String nome;
 	private String email;
 	private String senha;
 
+
+	private static Validations validations = new Validations();
+	
 	public UsuarioForm() {
 		super();
 	}
@@ -30,7 +34,9 @@ public class UsuarioForm {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws Exception {
+		if(!validations.emailValidation(email))
+			throw new Exception("Email inválido.");
 		this.email = email;
 	}
 
@@ -38,7 +44,9 @@ public class UsuarioForm {
 		return senha;
 	}
 
-	public void setSenha(String senha) {
+	public void setSenha(String senha) throws Exception {
+		if(!validations.keyValidation(senha))
+			throw new Exception("Senha inválida.");
 		this.senha = senha;
 	}
 	
