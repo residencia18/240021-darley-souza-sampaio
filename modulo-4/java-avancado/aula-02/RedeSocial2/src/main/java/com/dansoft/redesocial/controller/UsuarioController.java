@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -48,14 +49,18 @@ public class UsuarioController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UsuarioDTO> inserirUsuario(@RequestBody UsuarioForm usuarioForm,
+	public ResponseEntity<?> inserirUsuario(@RequestBody UsuarioForm usuarioForm,
 			UriComponentsBuilder uriBuilder) {
-		Usuario usuario = usuarioForm.toUsuario();
-		usuarioRepository.save(usuario);
-		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-		uriBuilder.path("/usuarios/{id}");
-		URI uri = uriBuilder.buildAndExpand(usuario.getId()).toUri();
-		return ResponseEntity.created(uri).body(usuarioDTO);
+		try {
+			Usuario usuario = usuarioForm.toUsuario();
+			usuarioRepository.save(usuario);
+			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+			uriBuilder.path("/usuarios/{id}");
+			URI uri = uriBuilder.buildAndExpand(usuario.getId()).toUri();
+			return ResponseEntity.created(uri).body(usuarioDTO);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 
 	@PutMapping("/{id}")
@@ -76,7 +81,7 @@ public class UsuarioController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<UsuarioDTO> deletarUsuario(@PathVariable Integer id, @RequestBody UsuarioForm usuarioForm,
 			UriComponentsBuilder uriBuilder) {
