@@ -1,0 +1,1 @@
+Módulo destinado as trilhas avançadas de Java e Frontend
