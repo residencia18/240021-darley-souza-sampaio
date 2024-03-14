@@ -3,6 +3,7 @@ package com.dansoft.redesocial.model;
 import java.util.List;
 
 import com.dansoft.redesocial.validations.Validations;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -10,7 +11,7 @@ import jakarta.persistence.*;
 public class Usuario {
 
 	private static Validations validations = new Validations();
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -26,6 +27,11 @@ public class Usuario {
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Postagem> postagens;
+
+	@JsonManagedReference
+	@ManyToMany
+	@JoinTable(name = "amigos", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "amigo_id"))
+	private List<Usuario> amigos;
 
 	public Usuario(String nome, String email, String password) {
 		this.nome = nome;
@@ -79,6 +85,16 @@ public class Usuario {
 		if (!validations.keyValidation(senha))
 			throw new Exception("Erro: Senha inválida.");
 		this.senha = senha;
+	}
+
+	public List<Usuario> getAmigos() {
+		return amigos;
+	}
+
+	public void setAmigos(List<Usuario> amigos) throws Exception {
+		if (amigos == null)
+			throw new Exception("Erro: Lista de amigos não deve ser nula");
+		this.amigos = amigos;
 	}
 
 }

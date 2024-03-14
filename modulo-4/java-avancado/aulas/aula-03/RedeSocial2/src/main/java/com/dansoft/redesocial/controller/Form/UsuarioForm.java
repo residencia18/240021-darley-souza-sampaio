@@ -6,7 +6,7 @@ public class UsuarioForm {
 	private String nome;
 	private String email;
 	private String senha;
-	
+
 	public UsuarioForm() {
 		super();
 	}
@@ -41,7 +41,7 @@ public class UsuarioForm {
 	public void setSenha(String senha) throws Exception {
 		this.senha = senha;
 	}
-	
+
 	public Usuario toUsuario() throws Exception {
 		Usuario usuario = new Usuario();
 		usuario.setNome(nome);
@@ -49,5 +49,5 @@ public class UsuarioForm {
 		usuario.setEmail(email);
 		return usuario;
 	}
- 
+
 }

@@ -3,6 +3,8 @@ package com.dansoft.redesocial.controller;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,5 +97,54 @@ public class UsuarioController {
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
 		}
+	}
+	
+	@GetMapping("/{id}/amigos/")
+    public ResponseEntity<?> listarAmigos(@PathVariable Integer id) {
+        try {
+            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
+            List<UsuarioDTO> amigosDTO = usuario.getAmigos().stream()
+                    .map(UsuarioDTO::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(amigosDTO);
+        } catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+	@PostMapping("/{id}/amigos/{amigoId}")
+	public ResponseEntity<?> adicionarAmigo(@PathVariable Integer id, @PathVariable Integer amigoId, UriComponentsBuilder uriBuilder) {
+	    try {
+	        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
+	        Usuario amigo = usuarioRepository.findById(amigoId).orElseThrow(() -> new Exception("Amigo não encontrado"));
+	       
+	        usuario.getAmigos().add(amigo);
+	        usuarioRepository.save(usuario);
+
+	        amigo.getAmigos().add(usuario);
+	        usuarioRepository.save(amigo);
+	        
+	        URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
+	        
+	        return ResponseEntity.created(uri).build();
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    }
+	}
+
+	@DeleteMapping("/{id}/amigos/{amigoId}")
+	public ResponseEntity<?> removerAmigo(@PathVariable Integer id, @PathVariable Integer amigoId, UriComponentsBuilder uriBuilder) {
+	    try {
+	        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
+	        Usuario amigo = usuarioRepository.findById(amigoId).orElseThrow(() -> new Exception("Amigo não encontrado"));
+	        usuario.getAmigos().remove(amigo);
+	        usuarioRepository.save(usuario);
+	        
+	        URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
+	        
+	        return ResponseEntity.ok(uri);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    }
 	}
 }
