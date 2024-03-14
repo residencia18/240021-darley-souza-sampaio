@@ -14,6 +14,8 @@ O repositório está organizado em várias pastas, cada uma correspondendo a um 
 
 - **Módulo 1**: Capacitação
 - **Módulo 2**: Introdução à Python, .NET, Java e WEB FrontEnd.
+- **Módulo 3**: Trilha Básica de Java e WEB FrontEnd.
+- **Módulo 4**: Trilha Avançada de Java e WEB FrontEnd.
 
 
 ## Como Navegar
