@@ -46,7 +46,7 @@ public class PostagemForm {
 		return codigo.toString();
 	}
 
-	public Postagem toPostagem() {
+	public Postagem toPostagem() throws Exception {
 		Postagem postagem = new Postagem();
 		postagem.setCodigo(gerarCodigoAleatorio());
 		postagem.setTexto(texto);

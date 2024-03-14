@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,7 +29,7 @@ public class PostagemController {
 		}
 
 		List<PostagemDTO> lista = new ArrayList<>();
-		for (Postagem postagem: listaPostagens) {
+		for (Postagem postagem : listaPostagens) {
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
 			lista.add(postagemDTO);
 		}
@@ -48,14 +49,19 @@ public class PostagemController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PostagemDTO> inserirPostagem(@RequestBody PostagemForm postagemForm,
-			UriComponentsBuilder uriBuilder) {
-		Postagem postagem = postagemForm.toPostagem();
-		postagemRepository.save(postagem);
-		PostagemDTO postagemDTO = new PostagemDTO(postagem);
-		uriBuilder.path("/postagens/{id}");
-		URI uri = uriBuilder.buildAndExpand(postagem.getId()).toUri();
-		return ResponseEntity.created(uri).body(postagemDTO);
+	public ResponseEntity<?> inserirPostagem(@RequestBody PostagemForm postagemForm, UriComponentsBuilder uriBuilder)
+			throws Exception {
+		try {
+
+			Postagem postagem = postagemForm.toPostagem();
+			postagemRepository.save(postagem);
+			PostagemDTO postagemDTO = new PostagemDTO(postagem);
+			uriBuilder.path("/postagens/{id}");
+			URI uri = uriBuilder.buildAndExpand(postagem.getId()).toUri();
+			return ResponseEntity.created(uri).body(postagemDTO);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 
 	@PutMapping("/{id}")
@@ -72,7 +78,7 @@ public class PostagemController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<PostagemDTO> deletarPostagem(@PathVariable Integer id, @RequestBody PostagemForm postagemForm,
 			UriComponentsBuilder uriBuilder) {

@@ -39,7 +39,9 @@ public class Postagem {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
+	public void setCodigo(String codigo) throws Exception {
+		if(codigo == null)
+			throw new Exception("Erro: Código não deve ser nulo.");
 		this.codigo = codigo;
 	}
 
@@ -47,7 +49,9 @@ public class Postagem {
 		return texto;
 	}
 
-	public void setTexto(String texto) {
+	public void setTexto(String texto) throws Exception{
+		if(texto == null)
+			throw new Exception("Erro: Texto não deve ser nulo.");
 		this.texto = texto;
 	}
 
@@ -55,7 +59,9 @@ public class Postagem {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(Usuario usuario) throws Exception {
+		if(usuario == null)
+			throw new Exception("Erro: Usuário não deve ser nulo.");
 		this.usuario = usuario;
 	}
 
