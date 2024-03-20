@@ -3,7 +3,7 @@ package com.dansoft.redesocial.model;
 import java.util.List;
 
 import com.dansoft.redesocial.validations.Validations;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -27,8 +27,8 @@ public class Usuario {
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Postagem> postagens;
-
-	@JsonManagedReference
+	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "amigos", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "amigo_id"))
 	private List<Usuario> amigos;
