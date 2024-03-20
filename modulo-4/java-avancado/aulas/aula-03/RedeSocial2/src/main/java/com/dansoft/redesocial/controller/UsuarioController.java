@@ -117,11 +117,19 @@ public class UsuarioController {
 	    try {
 	        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
 	        Usuario amigo = usuarioRepository.findById(amigoId).orElseThrow(() -> new Exception("Amigo não encontrado"));
+	        
+	        Usuario newUsuario = new Usuario();
+	        newUsuario.setNome(usuario.getNome());
+	        newUsuario.setEmail(usuario.getEmail());
+	        
+	        Usuario newAmigo = new Usuario();
+	        newAmigo.setNome(amigo.getNome());
+	        newAmigo.setEmail(amigo.getEmail());
 	       
-	        usuario.getAmigos().add(amigo);
+	        usuario.getAmigos().add(newAmigo);
 	        usuarioRepository.save(usuario);
 
-	        amigo.getAmigos().add(usuario);
+	        amigo.getAmigos().add(newUsuario);
 	        usuarioRepository.save(amigo);
 	        
 	        URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
