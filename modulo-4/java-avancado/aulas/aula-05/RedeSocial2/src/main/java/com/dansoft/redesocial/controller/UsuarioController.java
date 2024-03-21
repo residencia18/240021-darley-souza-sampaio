@@ -25,7 +25,7 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	private static Logger log = LoggerFactory.getLogger(Redesocial2Application.class);
+	private static Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
 	@GetMapping
 	public List<UsuarioDTO> listaUsuarios(@RequestParam(required = false) String name) {
