@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.dansoft.redesocial.Redesocial2Application;
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
 import com.dansoft.redesocial.controller.dto.UsuarioDTO;
 import com.dansoft.redesocial.model.Usuario;
@@ -20,6 +24,8 @@ import com.dansoft.redesocial.repository.UsuarioRepository;
 public class UsuarioController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+
+	private static Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
 	@GetMapping
 	public List<UsuarioDTO> listaUsuarios(@RequestParam(required = false) String name) {
@@ -42,10 +48,16 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDTO> listarUsuario(@PathVariable Integer id, UriComponentsBuilder uriBuilder) {
 		try {
 			Usuario usuario = usuarioRepository.getReferenceById(id);
+			
 			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+			
 			uriBuilder.path("/usuarios/{id}");
+			
+			log.info("Usuário com id {} retornado para consulta", id);
+
 			return ResponseEntity.ok(usuarioDTO);
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -55,12 +67,19 @@ public class UsuarioController {
 			UriComponentsBuilder uriBuilder) {
 		try {
 			Usuario usuario = usuarioForm.toUsuario();
+			
 			usuarioRepository.save(usuario);
+			
 			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+			
 			uriBuilder.path("/usuarios/{id}");
+			
 			URI uri = uriBuilder.buildAndExpand(usuario.getId()).toUri();
+
+			log.info("Usuário com id {} inserido com sucesso no banco.", usuario.getId());
 			return ResponseEntity.created(uri).body(usuarioDTO);
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -77,9 +96,12 @@ public class UsuarioController {
 
 			usuarioRepository.save(usuario);
 			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
+
+			log.info("Dados do usuário com id {} foram alterados com sucesso.", usuario.getId());
 			return ResponseEntity.ok(usuarioDTO);
 
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -92,9 +114,12 @@ public class UsuarioController {
 			Usuario usuario = usuarioRepository.getReferenceById(id);
 			usuarioRepository.delete(usuario);
 			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-			return ResponseEntity.ok(usuarioDTO);
+			
 
+			log.info("Usuário com id {} removido com sucesso do banco.", usuario.getId());
+			return ResponseEntity.ok(usuarioDTO);
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -106,8 +131,11 @@ public class UsuarioController {
             List<UsuarioDTO> amigosDTO = usuario.getAmigos().stream()
                     .map(UsuarioDTO::new)
                     .collect(Collectors.toList());
+            
+			log.info("Lista de amigos do usuário com id {} retornada com sucesso para consulta.", id);
             return ResponseEntity.ok(amigosDTO);
         } catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -126,8 +154,11 @@ public class UsuarioController {
 	        
 	        URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
 	        
+	        log.info("Usuário com id {} adicionado na lista de amigos do usuário com id {}.", amigoId, id);
+	        
 	        return ResponseEntity.created(uri).build();
 	    } catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	    }
 	}
@@ -145,9 +176,11 @@ public class UsuarioController {
 	        usuarioRepository.save(amigo);
 	        
 	        URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
-
+	        
+	        log.info("Usuário com id {} removido da lista de amigos do usuário com id {}", amigoId, id);
 	        return ResponseEntity.created(uri).build();
 	    } catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	    }
 	}
