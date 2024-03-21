@@ -9,7 +9,7 @@ public class Postagem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "codigo", nullable = false, length = 11)
+	@Column(name = "codigo", nullable = false, length = 11, unique = true)
 	private String codigo;
 
 	@Column(name = "texto", nullable = false, length = 255)
