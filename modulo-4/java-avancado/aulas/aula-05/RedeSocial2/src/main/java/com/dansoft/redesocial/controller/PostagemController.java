@@ -3,6 +3,8 @@ package com.dansoft.redesocial.controller;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ public class PostagemController {
 	@Autowired
 	private PostagemRepository postagemRepository;
 
+	private static Logger log = LoggerFactory.getLogger(PostagemController.class);
+	
 	@GetMapping
 	public List<PostagemDTO> listaPostagensNome(@RequestParam(required = false) String codigo) {
 		List<Postagem> listaPostagens;
@@ -40,10 +44,17 @@ public class PostagemController {
 	public ResponseEntity<PostagemDTO> listaPostagem(@PathVariable Integer id, UriComponentsBuilder uriBuilder) {
 		try {
 			Postagem postagem = postagemRepository.getReferenceById(id);
+			
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
+			
 			uriBuilder.path("/postagens/{id}");
+			
+
+			log.info("Postagem com id {} retornada para consulta.", id);
+			
 			return ResponseEntity.ok(postagemDTO);
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -54,12 +65,20 @@ public class PostagemController {
 		try {
 
 			Postagem postagem = postagemForm.toPostagem();
+			
 			postagemRepository.save(postagem);
+			
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
+			
 			uriBuilder.path("/postagens/{id}");
+			
 			URI uri = uriBuilder.buildAndExpand(postagem.getId()).toUri();
+			
+			log.info("Postagem com id {} inserida com sucesso no banco.", postagem.getId());
+			
 			return ResponseEntity.created(uri).body(postagemDTO);
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -69,12 +88,19 @@ public class PostagemController {
 			UriComponentsBuilder uriBuilder) {
 		try {
 			Postagem postagem = postagemRepository.getReferenceById(id);
+			
 			postagem.setTexto(postagemForm.getTexto());
+			
 			postagemRepository.save(postagem);
+			
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-			return ResponseEntity.ok(postagemDTO);
+			
 
+			log.info("Alterações na postagem com id {} realizadas com sucesso.", postagem.getId());
+			
+			return ResponseEntity.ok(postagemDTO);
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -83,13 +109,17 @@ public class PostagemController {
 	public ResponseEntity<PostagemDTO> deletarPostagem(@PathVariable Integer id, @RequestBody PostagemForm postagemForm,
 			UriComponentsBuilder uriBuilder) {
 		try {
-
 			Postagem postagem = postagemRepository.getReferenceById(id);
+			
 			postagemRepository.delete(postagem);
+			
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
+			
+	        log.info("Postagem com id {} removida com sucesso.", id);
+			
 			return ResponseEntity.ok(postagemDTO);
-
 		} catch (Exception e) {
+	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
