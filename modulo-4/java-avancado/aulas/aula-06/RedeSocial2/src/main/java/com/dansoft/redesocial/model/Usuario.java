@@ -6,30 +6,47 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 public class Usuario {
 
-	//private static Validations validations = new Validations();
+	// private static Validations validations = new Validations();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private @Getter @Setter Long id;
 
 	@Column(name = "nome", nullable = false, length = 50)
+	@NotNull
+	@NotEmpty
 	private @Getter @Setter String nome;
 
 	@Column(name = "email", length = 50, unique = true)
+	@NotNull
+	@NotEmpty
+	@Email(regexp = ".+[@].+[\\.].+", message = "Email inválido")
 	private @Getter @Setter String email;
 
 	@Column(name = "senha", nullable = false, length = 32)
+	@NotNull(message = "A senha não pode ser nula")
+	@NotEmpty(message = "A senha não pode ser vazia")
+	@Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
+	@Pattern(regexp = ".*[a-z].*", message = "A senha deve conter pelo menos uma letra minúscula")
+	@Pattern(regexp = ".*[A-Z].*", message = "A senha deve conter pelo menos uma letra maiúscula")
+	@Pattern(regexp = ".*\\d.*", message = "A senha deve conter pelo menos um dígito")
+	@Pattern(regexp = ".*[@#$%^&+=.!].*", message = "A senha deve conter pelo menos um caractere especial")
 	private @Getter @Setter String senha;
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private @Getter @Setter List<Postagem> postagens;
-	
+
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "amigos", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "amigo_id"))
