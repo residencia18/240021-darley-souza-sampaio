@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import com.dansoft.redesocial.Redesocial2Application;
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
 import com.dansoft.redesocial.controller.dto.UsuarioDTO;
 import com.dansoft.redesocial.model.Usuario;
