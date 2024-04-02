@@ -2,24 +2,31 @@ package com.dansoft.redesocial.model;
 
 import java.sql.Date;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity	
+@Getter
+@Setter
 public class Postagem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private @Getter @Setter Long id;
+
+	private Long id;
 
 	@Column(name = "codigo", nullable = false, length = 11, unique = true)
-	private @Getter @Setter String codigo;
+	private  String codigo;
 
 	@Column(name = "texto", nullable = false, length = 255)
-	private @Getter @Setter String texto;
+	@NotBlank(message = "O texto não deve ser vazio ou nulo")
+	private String texto;
+	
+	private Date data;
 
 	@ManyToOne
 	@JoinColumn(name = "Usuario_id", referencedColumnName = "id", nullable = false)
-	private @Getter @Setter Usuario usuario;
+	private Usuario usuario;
 
 	public Postagem() {
 	}
