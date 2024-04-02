@@ -1,58 +1,74 @@
 package com.dansoft.redesocial.model;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.javafaker.Faker;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+
 class UsuarioTest {
 
-	 @Test
-	    void testNome() {
-	        Usuario usuario = new Usuario();
-	        
-	        //Nome correto
-	        assertDoesNotThrow(() -> usuario.setNome("João da Silva"));
-	        
-	        // Nome incorreto
-	        Exception nomeIncorretoException = assertThrows(Exception.class, () -> usuario.setNome("João da da Silva")); 
-	        assertEquals("Erro: Nome inválido.", nomeIncorretoException.getMessage());
-	        
-	        // Nome nulo
-	        Exception nomeNuloException = assertThrows(Exception.class, () -> usuario.setNome(null));
-	        assertEquals("Erro: Nome não deve ser nulo.", nomeNuloException.getMessage());
-	    }
+	private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	private final Validator validator = factory.getValidator();
+	private final Faker faker = new Faker();
 
-	    @Test
-	    void testEmail() {
-	        Usuario usuario = new Usuario();
-	        
-	        // Email válido
-	        assertDoesNotThrow(() -> usuario.setEmail("joao@example.com"));
-	        
-	        // Email inválido
-	        Exception emailInvalidoException = assertThrows(Exception.class, () -> usuario.setEmail("joao@example"));
-	        assertEquals("Erro: Email inválido.", emailInvalidoException.getMessage());
-	        
-	        // Email nulo
-	        Exception emailNuloException = assertThrows(Exception.class, () -> usuario.setEmail(null));
-	        assertEquals("Erro: Email não deve ser nulo.", emailNuloException.getMessage());
-	    }
+	@Test
+	public void testNomeCorreto() {
+		Usuario usuario = new Usuario();
+		usuario.setNome(faker.name().fullName());
 
-	    @Test
-	    void testSenha() {
-	        Usuario usuario = new Usuario();
-	        
-	        // Senha válida
-	        assertDoesNotThrow(() -> usuario.setSenha("123@Senha"));
-	        
-	        // Senha inválida
-	        Exception senhaInvalidaException = assertThrows(Exception.class, () -> usuario.setSenha("123senha"));
-	        assertEquals("Erro: Senha inválida.", senhaInvalidaException.getMessage());
-	        
-	        // Senha nula
-	        Exception senhaNulaException = assertThrows(Exception.class, () -> usuario.setSenha(null));
-	        assertEquals("Erro: Senha não deve ser nula.", senhaNulaException.getMessage());
-	    }
+		Set<ConstraintViolation<String>> violations = validator.validate(usuario.getNome());		
+		assertTrue(violations.isEmpty());
+	}
+
+	@Test
+	public void testNomeIncorreto() {
+		Usuario usuario = new Usuario();
+		usuario.setNome("João da da Silva");
+
+		Set<ConstraintViolation<String>> violations = validator.validate(usuario.getNome());
+		
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().equals("Nome inválido")));
+	}
+
+	@Test
+	public void testNomeVazio() {
+		Usuario usuario = new Usuario();
+		usuario.setNome("");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+		assertFalse(violations.isEmpty());
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("O nome não deve ser vazio")));
+	}
+
+	@Test
+	public void testNomeNulo() {
+		Usuario usuario = new Usuario();
+		usuario.setNome(null);
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+		assertFalse(violations.isEmpty());
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("O nome não deve ser nulo")));
+	}
+
+	@Test
+	void testEmailCorreto() {
+		Usuario usuario = new Usuario();
+		usuario.setNome("joaocapixaba@gmail.com");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+		assertTrue(violations.isEmpty());
+	}
 
 }
