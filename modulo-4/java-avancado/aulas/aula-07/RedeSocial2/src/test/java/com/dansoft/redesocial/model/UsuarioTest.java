@@ -21,31 +21,33 @@ class UsuarioTest {
 	private final Faker faker = new Faker();
 
 	@Test
-	public void testNomeCorreto() {
+	public void testNome() {
 		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
 		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
-		Set<ConstraintViolation<String>> violations = validator.validate(usuario.getNome());		
+		if (!violations.isEmpty())
+			System.out.println(violations.toString());
+
 		assertTrue(violations.isEmpty());
-	}
-
-	@Test
-	public void testNomeIncorreto() {
-		Usuario usuario = new Usuario();
-		usuario.setNome("João da da Silva");
-
-		Set<ConstraintViolation<String>> violations = validator.validate(usuario.getNome());
-		
-		assertFalse(violations.isEmpty());
-		assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().equals("Nome inválido")));
 	}
 
 	@Test
 	public void testNomeVazio() {
 		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setNome("");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de nome vazio falhou.");
+
 		assertFalse(violations.isEmpty());
 		assertTrue(
 				violations.stream().anyMatch(violation -> violation.getMessage().equals("O nome não deve ser vazio")));
@@ -54,9 +56,16 @@ class UsuarioTest {
 	@Test
 	public void testNomeNulo() {
 		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setNome(null);
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de nome nulo falhou.");
+
 		assertFalse(violations.isEmpty());
 		assertTrue(
 				violations.stream().anyMatch(violation -> violation.getMessage().equals("O nome não deve ser nulo")));
@@ -65,10 +74,221 @@ class UsuarioTest {
 	@Test
 	void testEmailCorreto() {
 		Usuario usuario = new Usuario();
-		usuario.setNome("joaocapixaba@gmail.com");
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (!violations.isEmpty())
+			System.out.println(violations.toString());
+
 		assertTrue(violations.isEmpty());
 	}
 
+	@Test
+	void testEmailVazio() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
+		usuario.setEmail("");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de email vazio falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("O email não deve ser vazio")));
+
+	}
+
+	@Test
+	void testEmailNulo() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
+		usuario.setEmail(null);
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de email nulo falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("O email não deve ser nulo")));
+
+	}
+
+	@Test
+	void testEmailIncorreto() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
+		usuario.setEmail("teste@teste");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de email incorreto falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().equals("Email inválido")));
+
+	}
+	
+	@Test
+	void testSenhaCorreta() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("123456@Teste");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (!violations.isEmpty())
+			System.out.println(violations.toString());
+
+		assertTrue(violations.isEmpty());
+	}
+
+	@Test
+	void testSenhaCaractereEspecialIncorreta() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("123456Teste");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de senha incorreta falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream().anyMatch(
+				violation -> violation.getMessage().equals("A senha deve conter pelo menos um caractere especial")));
+
+	}
+
+	@Test
+	void testSenhaCaractereLetraMaiusculaIncorreta() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("123456@teste");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de senha incorreta falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream().anyMatch(
+				violation -> violation.getMessage().equals("A senha deve conter pelo menos uma letra maiúscula")));
+
+	}
+
+	@Test
+	void testSenhaCaractereLetraMinusculaIncorreta() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("123456@TESTE");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de senha incorreta falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream().anyMatch(
+				violation -> violation.getMessage().equals("A senha deve conter pelo menos uma letra minúscula")));
+
+	}
+
+	@Test
+	void testSenhaCaractereLetraNumericoIncorreta() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("Senha@Teste");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de senha incorreta falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream()
+				.anyMatch(violation -> violation.getMessage().equals("A senha deve conter pelo menos um dígito")));
+
+	}
+	
+	@Test
+	void testSenhaMinima() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("1@Senha");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de senha incorreta falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream()
+				.anyMatch(violation -> violation.getMessage().equals("A senha deve ter no mínimo 8 caracteres")));
+
+	}
+	
+	@Test
+	void testSenhaVazia() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("");
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de senha incorreta falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream()
+				.anyMatch(violation -> violation.getMessage().equals("A senha não deve ser vazia")));
+
+	}
+	
+	@Test
+	void testSenhaNula() {
+		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(null);
+
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de senha incorreta falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(violations.stream()
+				.anyMatch(violation -> violation.getMessage().equals("A senha não deve ser nula")));
+
+	}
 }

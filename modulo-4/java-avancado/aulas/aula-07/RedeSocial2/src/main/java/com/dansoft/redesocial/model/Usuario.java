@@ -33,7 +33,6 @@ public class Usuario {
 	@Column(name = "nome", nullable = false, length = 50)
 	@NotEmpty(message = "O nome não deve ser vazio")
 	@NotNull(message = "O nome não deve ser nulo")
-	@Pattern(regexp = "^(?:[\\\\p{Lu}&&[\\\\p{IsLatin}]])(?:(?:')?(?:[\\\\p{Ll}&&[\\\\p{IsLatin}]]))+(?:\\\\-(?:[\\\\p{Lu}&&[\\\\p{IsLatin}]])(?:(?:')?(?:[\\\\p{Ll}&&[\\\\p{IsLatin}]]))+)*(?: (?:(?:e|y|de(?:(?: la| las| lo| los))?|do|dos|da|das|del|van|von|bin|le) )?(?:(?:(?:d'|D'|O'|Mc|Mac|al\\\\-))?(?:[\\\\p{Lu}&&[\\\\p{IsLatin}]])(?:(?:')?(?:[\\\\p{Ll}&&[\\\\p{IsLatin}]]))+|(?:[\\\\p{Lu}&&[\\\\p{IsLatin}]])(?:(?:')?(?:[\\\\p{Ll}&&[\\\\p{IsLatin}]]))+(?:\\\\-(?:[\\\\p{Lu}&&[\\\\p{IsLatin}]])(?:(?:')?(?:[\\\\p{Ll}&&[\\\\p{IsLatin}]]))+)*))+(?: (?:Jr\\\\.|II|III|IV))?$", message = "Nome inválido")
 	private String nome;
 
 	@Column(name = "email", length = 50, unique = true)
