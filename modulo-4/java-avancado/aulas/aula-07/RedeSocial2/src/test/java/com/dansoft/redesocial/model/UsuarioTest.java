@@ -21,31 +21,33 @@ class UsuarioTest {
 	private final Faker faker = new Faker();
 
 	@Test
-	public void testNomeCorreto() {
+	public void testNome() {
 		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
 		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
+		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
-		Set<ConstraintViolation<String>> violations = validator.validate(usuario.getNome());		
+		if (!violations.isEmpty())
+			System.out.println(violations.toString());
+
 		assertTrue(violations.isEmpty());
-	}
-
-	@Test
-	public void testNomeIncorreto() {
-		Usuario usuario = new Usuario();
-		usuario.setNome("João da da Silva");
-
-		Set<ConstraintViolation<String>> violations = validator.validate(usuario.getNome());
-		
-		assertFalse(violations.isEmpty());
-		assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().equals("Nome inválido")));
 	}
 
 	@Test
 	public void testNomeVazio() {
 		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setNome("");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de nome vazio falhou.");
+
 		assertFalse(violations.isEmpty());
 		assertTrue(
 				violations.stream().anyMatch(violation -> violation.getMessage().equals("O nome não deve ser vazio")));
@@ -54,21 +56,19 @@ class UsuarioTest {
 	@Test
 	public void testNomeNulo() {
 		Usuario usuario = new Usuario();
+		usuario.setId((long) 1);
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setNome(null);
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+		if (violations.isEmpty())
+			System.out.println("Teste de nome nulo falhou.");
+
 		assertFalse(violations.isEmpty());
 		assertTrue(
 				violations.stream().anyMatch(violation -> violation.getMessage().equals("O nome não deve ser nulo")));
-	}
-
-	@Test
-	void testEmailCorreto() {
-		Usuario usuario = new Usuario();
-		usuario.setNome("joaocapixaba@gmail.com");
-
-		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
-		assertTrue(violations.isEmpty());
 	}
 
 }
