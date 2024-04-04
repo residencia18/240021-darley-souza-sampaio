@@ -1,6 +1,9 @@
 package com.dansoft.redesocial.controller.dto;
 import com.dansoft.redesocial.model.Usuario;
 
+import lombok.Getter;
+
+@Getter
 public class UsuarioDTO {
 	private long id;
 	private String nome;
@@ -15,18 +18,5 @@ public class UsuarioDTO {
 		this.nome = user.getNome();
 		this.email = user.getEmail();
 	}
-
-	public long getId() {
-		return id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
 
 }

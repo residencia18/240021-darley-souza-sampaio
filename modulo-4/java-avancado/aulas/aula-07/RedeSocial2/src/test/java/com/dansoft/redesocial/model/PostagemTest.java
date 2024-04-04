@@ -1,45 +1,69 @@
 package com.dansoft.redesocial.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.javafaker.Faker;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+
 class PostagemTest {
+	private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	private final Validator validator = factory.getValidator();
+	private final Faker faker = new Faker();
 
-	 @Test
-	    void testCodigo() {
-	        Postagem postagem = new Postagem();
-	        
-	        // Código válido
-	        assertDoesNotThrow(() -> postagem.setCodigo("abc123"));
-	        
-	        // Código nulo
-	        Exception codigoNuloException = assertThrows(Exception.class, () -> postagem.setCodigo(null));
-	        assertEquals("Erro: Código não deve ser nulo.", codigoNuloException.getMessage());
-	    }
+	@Test
+	public void testTextoCorreto() {
+		Postagem postagem= new Postagem();
+		postagem.setId((long) 1);
+		postagem.setCodigo(Postagem.gerarCodigoAleatorio());
+		postagem.setTexto(faker.lorem().sentence());
+		Set<ConstraintViolation<Postagem>> violations = validator.validate(postagem);
 
-	    @Test
-	    void testTexto() {
-	        Postagem postagem = new Postagem();
-	        
-	        // Texto válido
-	        assertDoesNotThrow(() -> postagem.setTexto("Se o pato perde a pata ele fica manco ou viuvo?."));
-	        
-	        // Texto nulo
-	        Exception textoNuloException = assertThrows(Exception.class, () -> postagem.setTexto(null));
-	        assertEquals("Erro: Texto não deve ser nulo.", textoNuloException.getMessage());
-	    }
+		if (!violations.isEmpty())
+			System.out.println("Teste para verificação de texto correto falhou: " + violations.toString());
 
-	    @Test
-	    void testUsuario() {
-	        Postagem postagem = new Postagem();
-	        Usuario usuario = new Usuario();
-	        
-	        // Usuário válido
-	        assertDoesNotThrow(() -> postagem.setUsuario(usuario));
-	        
-	        // Usuário nulo
-	        Exception usuarioNuloException = assertThrows(Exception.class, () -> postagem.setUsuario(null));
-	        assertEquals("Erro: Usuário não deve ser nulo.", usuarioNuloException.getMessage());
-	    }
+		assertTrue(violations.isEmpty());
+	}
+
+	@Test
+	public void testTextoVazio() {
+		Postagem postagem= new Postagem();
+		postagem.setId((long) 1);
+		postagem.setCodigo(Postagem.gerarCodigoAleatorio());
+		postagem.setTexto("");
+		
+		Set<ConstraintViolation<Postagem>> violations = validator.validate(postagem);
+
+		if (violations.isEmpty())
+			System.out.println("Teste para verificação de texto vazio falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("O texto não deve ser vazio")));
+	}
+
+	@Test
+	public void testTextoNulo() {
+		Postagem postagem= new Postagem();
+		postagem.setId((long) 1);
+		postagem.setCodigo(Postagem.gerarCodigoAleatorio());
+		postagem.setTexto(null);
+		
+		Set<ConstraintViolation<Postagem>> violations = validator.validate(postagem);
+
+		if (violations.isEmpty())
+			System.out.println("Teste para verificação de texto nulo falhou.");
+
+		assertFalse(violations.isEmpty());
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("O texto não deve ser nulo")));
+	}
 }

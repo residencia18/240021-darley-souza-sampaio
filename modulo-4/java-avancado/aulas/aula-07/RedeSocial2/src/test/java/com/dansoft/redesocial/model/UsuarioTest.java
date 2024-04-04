@@ -30,7 +30,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
-			System.out.println(violations.toString());
+			System.out.println("Teste para verificação de nome correto falhou: " + violations.toString());
 
 		assertTrue(violations.isEmpty());
 	}
@@ -46,7 +46,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de nome vazio falhou.");
+			System.out.println("Teste para verificação de nome vazio falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -64,7 +64,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de nome nulo falhou.");
+			System.out.println("Teste para verificação de nome nulo falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -98,7 +98,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de email vazio falhou.");
+			System.out.println("Teste para verificação de email vazio falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -117,7 +117,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de email nulo falhou.");
+			System.out.println("Teste para verificação de email nulo falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -136,13 +136,13 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de email incorreto falhou.");
+			System.out.println("Teste para verificação de email incorreto falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().equals("Email inválido")));
 
 	}
-	
+
 	@Test
 	void testSenhaCorreta() {
 		Usuario usuario = new Usuario();
@@ -154,7 +154,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
-			System.out.println(violations.toString());
+			System.out.println("Teste para verificação de senha correta falhou: " + violations.toString());
 
 		assertTrue(violations.isEmpty());
 	}
@@ -170,7 +170,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha incorreta falhou.");
+			System.out.println("Teste para verificação de senha incorreto sem caractere especial falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(
@@ -189,7 +189,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha incorreta falhou.");
+			System.out.println("Teste para verificação de senha incorreta sem caractere de letra maiúscula falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(
@@ -208,7 +208,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha incorreta falhou.");
+			System.out.println("Teste para verificação de senha incorreta sem caractere de letra minúscula falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(
@@ -217,7 +217,7 @@ class UsuarioTest {
 	}
 
 	@Test
-	void testSenhaCaractereLetraNumericoIncorreta() {
+	void testSenhaCaractereNumericoIncorreta() {
 		Usuario usuario = new Usuario();
 		usuario.setId((long) 1);
 		usuario.setNome(faker.name().fullName());
@@ -227,14 +227,14 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha incorreta falhou.");
+			System.out.println("Teste para verificação de senha incorreta sem caractere numérico falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream()
 				.anyMatch(violation -> violation.getMessage().equals("A senha deve conter pelo menos um dígito")));
 
 	}
-	
+
 	@Test
 	void testSenhaMinima() {
 		Usuario usuario = new Usuario();
@@ -246,14 +246,14 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha incorreta falhou.");
+			System.out.println("Teste para verificação de senha incorreta com númer mínimo de caracteres falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream()
 				.anyMatch(violation -> violation.getMessage().equals("A senha deve ter no mínimo 8 caracteres")));
 
 	}
-	
+
 	@Test
 	void testSenhaVazia() {
 		Usuario usuario = new Usuario();
@@ -265,14 +265,14 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha incorreta falhou.");
+			System.out.println("Teste de senha vazia falhou.");
 
 		assertFalse(violations.isEmpty());
-		assertTrue(violations.stream()
-				.anyMatch(violation -> violation.getMessage().equals("A senha não deve ser vazia")));
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("A senha não deve ser vazia")));
 
 	}
-	
+
 	@Test
 	void testSenhaNula() {
 		Usuario usuario = new Usuario();
@@ -284,11 +284,11 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha incorreta falhou.");
+			System.out.println("Teste de senha vazia falhou.");
 
 		assertFalse(violations.isEmpty());
-		assertTrue(violations.stream()
-				.anyMatch(violation -> violation.getMessage().equals("A senha não deve ser nula")));
+		assertTrue(
+				violations.stream().anyMatch(violation -> violation.getMessage().equals("A senha não deve ser nula")));
 
 	}
 }
