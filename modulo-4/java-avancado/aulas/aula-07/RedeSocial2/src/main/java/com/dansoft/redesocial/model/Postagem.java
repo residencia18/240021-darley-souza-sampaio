@@ -1,6 +1,7 @@
 package com.dansoft.redesocial.model;
 
 import java.util.Date;
+import java.util.Random;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,6 +50,17 @@ public class Postagem {
 	public Postagem(String texto, Date createTime, Usuario usuario) {
 		this.texto = texto;
 		this.usuario = usuario;
+	}
+	
+	public static String gerarCodigoAleatorio() {
+		StringBuilder codigo = new StringBuilder();
+		Random random = new Random();
+
+		for (int i = 0; i < 11; i++) {
+			codigo.append(random.nextInt(10));
+		}
+
+		return codigo.toString();
 	}
 
 }
