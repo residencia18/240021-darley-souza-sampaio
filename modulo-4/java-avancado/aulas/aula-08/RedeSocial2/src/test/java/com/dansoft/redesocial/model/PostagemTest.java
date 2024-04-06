@@ -3,6 +3,7 @@ package com.dansoft.redesocial.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Locale;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import jakarta.validation.ValidatorFactory;
 class PostagemTest {
 	private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private final Validator validator = factory.getValidator();
-	private final Faker faker = new Faker();
+	private final Faker faker = new Faker(new Locale("pt-BR"));
 
 	@Test
 	public void testTextoCorreto() {
