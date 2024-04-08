@@ -1,7 +1,5 @@
 package com.dansoft.redesocial.controller.Form;
 
-import java.util.Random;
-
 import com.dansoft.redesocial.model.Postagem;
 import com.dansoft.redesocial.model.Usuario;
 
@@ -26,7 +24,7 @@ public class PostagemForm {
 
 	public Postagem toPostagem() throws Exception {
 		Postagem postagem = new Postagem();
-		postagem.setCodigo(postagem.gerarCodigoAleatorio());
+		postagem.setCodigo(Postagem.gerarCodigoAleatorio());
 		postagem.setTexto(texto);
 		postagem.setUsuario(usuario);
 		return postagem;

@@ -6,7 +6,6 @@ import com.dansoft.redesocial.model.Postagem;
 import com.dansoft.redesocial.model.Usuario;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class PostagemDTO {
