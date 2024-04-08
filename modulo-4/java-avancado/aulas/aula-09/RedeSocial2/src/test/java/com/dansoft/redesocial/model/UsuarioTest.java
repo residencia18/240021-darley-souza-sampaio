@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Locale;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.github.javafaker.Faker;
@@ -22,15 +23,19 @@ class UsuarioTest {
 	private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private final Validator validator = factory.getValidator();
 	private final Faker faker = new Faker(new Locale("pt-BR"));
-
-	@Test
-	public void testNome() {
-		Usuario usuario = new Usuario();
+	
+	private Usuario usuario = new Usuario();
+	
+	@BeforeEach
+	private void geradorDadosUsuario() {
 		usuario.setId((long) 1);
 		usuario.setNome(faker.name().fullName());
 		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
+		usuario.setSenha("123@Teste");
+	}
 
+	@Test
+	public void testNome() {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
@@ -41,10 +46,6 @@ class UsuarioTest {
 
 	@Test
 	public void testNomeVazio() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setNome("");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -59,10 +60,6 @@ class UsuarioTest {
 
 	@Test
 	public void testNomeNulo() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setNome(null);
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -77,12 +74,6 @@ class UsuarioTest {
 
 	@Test
 	void testEmailCorreto() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
-
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
@@ -93,10 +84,6 @@ class UsuarioTest {
 
 	@Test
 	void testEmailVazio() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setEmail("");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -112,10 +99,6 @@ class UsuarioTest {
 
 	@Test
 	void testEmailNulo() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setEmail(null);
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -131,10 +114,6 @@ class UsuarioTest {
 
 	@Test
 	void testEmailIncorreto() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
 		usuario.setEmail("teste@teste");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -149,12 +128,6 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaCorreta() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha("123456@Teste");
-
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
@@ -165,10 +138,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaCaractereEspecialIncorreta() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
+		
 		usuario.setSenha("123456Teste");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -184,10 +154,6 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaCaractereLetraMaiusculaIncorreta() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 		usuario.setSenha("123456@teste");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -203,10 +169,6 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaCaractereLetraMinusculaIncorreta() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 		usuario.setSenha("123456@TESTE");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -222,10 +184,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaCaractereNumericoIncorreta() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
+		
 		usuario.setSenha("Senha@Teste");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -241,10 +200,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaMinima() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
+		
 		usuario.setSenha("1@Senha");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -260,10 +216,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaVazia() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
+		
 		usuario.setSenha("");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -279,10 +232,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaNula() {
-		Usuario usuario = new Usuario();
-		usuario.setId((long) 1);
-		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
+		
 		usuario.setSenha(null);
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
