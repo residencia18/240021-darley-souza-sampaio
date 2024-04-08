@@ -14,7 +14,9 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class UsuarioTest {
 
 	private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -28,11 +30,11 @@ class UsuarioTest {
 		usuario.setNome(faker.name().fullName());
 		usuario.setEmail(faker.internet().emailAddress());
 		usuario.setSenha(faker.internet().password(8, 32, true, true, true));
-		System.out.println(usuario.getNome());
+
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
-			System.out.println("Teste para verificação de nome correto falhou: " + violations.toString());
+			log.info("Teste para verificação de nome correto falhou: " + violations.toString());
 
 		assertTrue(violations.isEmpty());
 	}
@@ -48,7 +50,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de nome vazio falhou.");
+			log.info("Teste para verificação de nome vazio falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -66,7 +68,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de nome nulo falhou.");
+			log.info("Teste para verificação de nome nulo falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -84,7 +86,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
-			System.out.println(violations.toString());
+			log.info(violations.toString());
 
 		assertTrue(violations.isEmpty());
 	}
@@ -100,7 +102,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de email vazio falhou.");
+			log.info("Teste para verificação de email vazio falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -119,7 +121,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de email nulo falhou.");
+			log.info("Teste para verificação de email nulo falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -138,7 +140,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de email incorreto falhou.");
+			log.info("Teste para verificação de email incorreto falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().equals("Email inválido")));
@@ -156,7 +158,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (!violations.isEmpty())
-			System.out.println("Teste para verificação de senha correta falhou: " + violations.toString());
+			log.info("Teste para verificação de senha correta falhou: " + violations.toString());
 
 		assertTrue(violations.isEmpty());
 	}
@@ -172,7 +174,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de senha incorreto sem caractere especial falhou.");
+			log.info("Teste para verificação de senha incorreto sem caractere especial falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(
@@ -191,7 +193,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de senha incorreta sem caractere de letra maiúscula falhou.");
+			log.info("Teste para verificação de senha incorreta sem caractere de letra maiúscula falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(
@@ -210,7 +212,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de senha incorreta sem caractere de letra minúscula falhou.");
+			log.info("Teste para verificação de senha incorreta sem caractere de letra minúscula falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream().anyMatch(
@@ -229,7 +231,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de senha incorreta sem caractere numérico falhou.");
+			log.info("Teste para verificação de senha incorreta sem caractere numérico falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream()
@@ -248,7 +250,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste para verificação de senha incorreta com númer mínimo de caracteres falhou.");
+			log.info("Teste para verificação de senha incorreta com númer mínimo de caracteres falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(violations.stream()
@@ -267,7 +269,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha vazia falhou.");
+			log.info("Teste de senha vazia falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
@@ -286,7 +288,7 @@ class UsuarioTest {
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
 
 		if (violations.isEmpty())
-			System.out.println("Teste de senha vazia falhou.");
+			log.info("Teste de senha vazia falhou.");
 
 		assertFalse(violations.isEmpty());
 		assertTrue(
