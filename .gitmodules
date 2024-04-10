@@ -1,0 +1,3 @@
+[submodule "modulo-2/python/residencia-tic18-python"]
+	path = modulo-2/python/residencia-tic18-python
+	url = https://github.com/danssampaio/residencia18.git
