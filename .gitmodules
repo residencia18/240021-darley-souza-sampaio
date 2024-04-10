@@ -3,4 +3,4 @@
 	url = https://github.com/danssampaio/residencia18.git
 [submodule "modulo-2/dotnet/residencia-tic18-dotnet"]
 	path = modulo-2/dotnet/residencia-tic18-dotnet
-	url = https://github.com/danssampaio/residencia18.git
+	url = https://github.com/danssampaio/residencia-tic18-dotnet.git
