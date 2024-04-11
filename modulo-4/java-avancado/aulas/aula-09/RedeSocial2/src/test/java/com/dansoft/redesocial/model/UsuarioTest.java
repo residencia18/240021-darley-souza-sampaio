@@ -23,9 +23,9 @@ class UsuarioTest {
 	private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 	private final Validator validator = factory.getValidator();
 	private final Faker faker = new Faker(new Locale("pt-BR"));
-	
+
 	private Usuario usuario = new Usuario();
-	
+
 	@BeforeEach
 	private void geradorDadosUsuario() {
 		usuario.setId((long) 1);
@@ -138,7 +138,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaCaractereEspecialIncorreta() {
-		
+
 		usuario.setSenha("123456Teste");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -184,7 +184,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaCaractereNumericoIncorreta() {
-		
+
 		usuario.setSenha("Senha@Teste");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -200,7 +200,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaMinima() {
-		
+
 		usuario.setSenha("1@Senha");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -216,7 +216,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaVazia() {
-		
+
 		usuario.setSenha("");
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
@@ -232,7 +232,7 @@ class UsuarioTest {
 
 	@Test
 	void testSenhaNula() {
-		
+
 		usuario.setSenha(null);
 
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
