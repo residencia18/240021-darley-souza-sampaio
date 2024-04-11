@@ -10,3 +10,9 @@
 [submodule "modulo-2/frontend/residencia-tic18-web"]
 	path = modulo-2/frontend/residencia-tic18-web
 	url = https://github.com/danssampaio/residencia-tic18-web.git
+[submodule "modulo-3/frontend/residencia-tic18-web"]
+	path = modulo-3/frontend/residencia-tic18-web
+	url = https://github.com/danssampaio/residencia-tic18-web.git
+[submodule "modulo-3/java/residencia-tic18-java"]
+	path = modulo-3/java/residencia-tic18-java
+	url = https://github.com/danssampaio/residencia-tic18-java.git
