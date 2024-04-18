@@ -55,15 +55,18 @@ public class UsuarioControllerTest {
 		usuario2.setSenha("123@User2");
 	}
 	
-	@Disabled
 	@Test
 	public void testListarUsuarios() {
 		List<Usuario> usuarios = new ArrayList<>();
 
 		usuarios.add(usuario1);
 		usuarios.add(usuario2);
+		
+		when(usuarioRepository.save(usuario1));
+		when(usuarioRepository.save(usuario2));
 
 		when(usuarioRepository.findAll()).thenReturn(usuarios);
+		
 
 		List<UsuarioDTO> response = usuarioController.listaUsuarios(null);
 
@@ -72,7 +75,6 @@ public class UsuarioControllerTest {
 		assertEquals("User2", response.get(1).getNome());
 	}
 
-	@Disabled
 	@Test
     public void testListarUsuario() {
         when(usuarioRepository.getReferenceById(1)).thenReturn(usuario1);
