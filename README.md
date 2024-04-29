@@ -1,5 +1,3 @@
-[![wakatime](https://wakatime.com/badge/user/3775be05-154e-4256-9fca-b70fc8dfddf7/project/9a73e66b-bea3-4e9f-bcd3-2a748d1f4977.svg)](https://wakatime.com/badge/user/3775be05-154e-4256-9fca-b70fc8dfddf7/project/9a73e66b-bea3-4e9f-bcd3-2a748d1f4977)
-
 # Repositório de Atividades da Residência em TIC18
 
 Bem-vindo ao repositório de atividades da Residência em Software TIC18! Aqui você encontrará as pastas e recursos relacionados às atividades desenvolvidas por mim ao longo da residência.
