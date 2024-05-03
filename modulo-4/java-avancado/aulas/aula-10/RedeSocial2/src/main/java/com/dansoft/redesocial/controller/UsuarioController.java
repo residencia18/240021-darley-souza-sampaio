@@ -3,7 +3,6 @@ package com.dansoft.redesocial.controller;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
 import com.dansoft.redesocial.controller.dto.UsuarioDTO;
 import com.dansoft.redesocial.model.Usuario;
-import com.dansoft.redesocial.repository.UsuarioRepository;
 import com.dansoft.redesocial.service.UsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/usuarios/")
 @Slf4j
 public class UsuarioController {
+
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -52,38 +51,37 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDTO> listarUsuario(@PathVariable Integer id, UriComponentsBuilder uriBuilder) {
 		try {
 			Usuario usuario = usuarioService.findUser(id);
-			
+
 			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-			
+
 			uriBuilder.path("/usuarios/{id}");
-			
+
 			log.info("Usuário com id {} retornado para consulta", id);
 
 			return ResponseEntity.ok(usuarioDTO);
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
 
 	@PostMapping
-	public ResponseEntity<?> inserirUsuario(@RequestBody UsuarioForm usuarioForm,
-			UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> inserirUsuario(@RequestBody UsuarioForm usuarioForm, UriComponentsBuilder uriBuilder) {
 		try {
 			Usuario usuario = usuarioForm.toUsuario();
-			
+
 			usuarioService.saveUser(usuario);
-			
+
 			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-			
+
 			uriBuilder.path("/usuarios/{id}");
-			
+
 			URI uri = uriBuilder.buildAndExpand(usuario.getId()).toUri();
 
 			log.info("Usuário com id {} inserido com sucesso no banco.", usuario.getId());
 			return ResponseEntity.created(uri).body(usuarioDTO);
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -105,7 +103,7 @@ public class UsuarioController {
 			return ResponseEntity.ok(usuarioDTO);
 
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -118,70 +116,71 @@ public class UsuarioController {
 			Usuario usuario = usuarioService.findUser(id);
 			usuarioService.deleteUser(usuario);
 			UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-			
 
 			log.info("Usuário com id {} removido com sucesso do banco.", usuario.getId());
 			return ResponseEntity.ok(usuarioDTO);
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@GetMapping("/{id}/amigos/")
 	public ResponseEntity<?> listarAmigos(@PathVariable Integer id) {
-	    try {
-	        List<UsuarioDTO> amigosDTO = usuarioService.listarAmigos(id);
-	        log.info("Lista de amigos do usuário com id {} retornada com sucesso para consulta.", id);
-	        return ResponseEntity.ok(amigosDTO);
-	    } catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
+		try {
+			List<UsuarioDTO> amigosDTO = usuarioService.listFriends(id);
+			log.info("Lista de amigos do usuário com id {} retornada com sucesso-- para consulta.", id);
+			return ResponseEntity.ok(amigosDTO);
+		} catch (Exception e) {
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 
 	@PostMapping("/{id}/amigos/{amigoId}")
-	public ResponseEntity<?> adicionarAmigo(@PathVariable Integer id, @PathVariable Integer amigoId, UriComponentsBuilder uriBuilder) {
-	    try {
-	        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
-	        Usuario amigo = usuarioRepository.findById(amigoId).orElseThrow(() -> new Exception("Amigo não encontrado"));
-	       
-	        usuario.getAmigos().add(amigo);
-	        usuarioRepository.save(usuario);
+	public ResponseEntity<?> adicionarAmigo(@PathVariable Integer id, @PathVariable Integer amigoId,
+			UriComponentsBuilder uriBuilder) {
+		try {
+			Usuario usuario = usuarioService.findUser(id);
+			Usuario amigo = usuarioService.findUser(amigoId);
 
-	        amigo.getAmigos().add(usuario);
-	        usuarioRepository.save(amigo);
-	        
-	        URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
-	        
-	        log.info("Usuário com id {} adicionado na lista de amigos do usuário com id {}.", amigoId, id);
-	        
-	        return ResponseEntity.created(uri).build();
-	    } catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
+			usuario.getAmigos().add(amigo);
+			usuarioService.saveUser(usuario);
+
+			amigo.getAmigos().add(usuario);
+			usuarioService.saveUser(amigo);
+
+			URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
+
+			log.info("Usuário com id {} adicionado na lista de amigos do usuário com id {}.", amigoId, id);
+
+			return ResponseEntity.created(uri).build();
+		} catch (Exception e) {
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 
 	@DeleteMapping("/{id}/amigos/{amigoId}")
-	public ResponseEntity<?> removerAmigo(@PathVariable Integer id, @PathVariable Integer amigoId, UriComponentsBuilder uriBuilder) {
-	    try {
-	        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
-	        Usuario amigo = usuarioRepository.findById(amigoId).orElseThrow(() -> new Exception("Amigo não encontrado"));
-	        
-	        usuario.getAmigos().remove(amigo);
-	        usuarioRepository.save(usuario);
-	        
-	        amigo.getAmigos().remove(usuario);
-	        usuarioRepository.save(amigo);
-	        
-	        URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
-	        
-	        log.info("Usuário com id {} removido da lista de amigos do usuário com id {}", amigoId, id);
-	        return ResponseEntity.created(uri).build();
-	    } catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
+	public ResponseEntity<?> removerAmigo(@PathVariable Integer id, @PathVariable Integer amigoId,
+			UriComponentsBuilder uriBuilder) {
+		try {
+			Usuario usuario = usuarioService.findUser(id);
+			Usuario amigo = usuarioService.findUser(amigoId);
+
+			usuario.getAmigos().remove(amigo);
+			usuarioService.saveUser(usuario);
+
+			amigo.getAmigos().remove(usuario);
+			usuarioService.saveUser(amigo);
+
+			URI uri = uriBuilder.path("/{id}/amigos/{amigoId}").buildAndExpand(id, amigoId).toUri();
+
+			log.info("Usuário com id {} removido da lista de amigos do usuário com id {}", amigoId, id);
+			return ResponseEntity.created(uri).build();
+		} catch (Exception e) {
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 }
