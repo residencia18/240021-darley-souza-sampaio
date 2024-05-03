@@ -21,7 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.dansoft.redesocial.controller.Form.PostagemForm;
 import com.dansoft.redesocial.controller.dto.PostagemDTO;
 import com.dansoft.redesocial.model.Postagem;
-import com.dansoft.redesocial.repository.PostagemRepository;
+import com.dansoft.redesocial.service.PostagemService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,40 +30,40 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PostagemController {
 	@Autowired
-	private PostagemRepository postagemRepository;
-	
+	private PostagemService postagemService;
+
 	@GetMapping
 	public List<PostagemDTO> listaPostagensNome(@RequestParam(required = false) String codigo) {
 		List<Postagem> listaPostagens;
-		if (codigo != null && !codigo.isEmpty()) {
-			listaPostagens = postagemRepository.findByCodigo(codigo);
-		} else {
-			listaPostagens = (List<Postagem>) postagemRepository.findAll();
-		}
+		if (codigo != null && !codigo.isEmpty())
+			listaPostagens = postagemService.findByCode(codigo);
+		else
+			listaPostagens = (List<Postagem>) postagemService.findAll();
 
 		List<PostagemDTO> lista = new ArrayList<>();
+		
 		for (Postagem postagem : listaPostagens) {
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
 			lista.add(postagemDTO);
 		}
+		
 		return lista;
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<PostagemDTO> listaPostagem(@PathVariable Integer id, UriComponentsBuilder uriBuilder) {
 		try {
-			Postagem postagem = postagemRepository.getReferenceById(id);
-			
+			Postagem postagem = postagemService.findPost(id);
+
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-			
+
 			uriBuilder.path("/postagens/{id}");
-			
 
 			log.info("Postagem com id {} retornada para consulta.", id);
-			
+
 			return ResponseEntity.ok(postagemDTO);
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -74,20 +74,20 @@ public class PostagemController {
 		try {
 
 			Postagem postagem = postagemForm.toPostagem();
-			
-			postagemRepository.save(postagem);
-			
+
+			postagemService.savePost(postagem);
+
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-			
+
 			uriBuilder.path("/postagens/{id}");
-			
+
 			URI uri = uriBuilder.buildAndExpand(postagem.getId()).toUri();
-			
+
 			log.info("Postagem com id {} inserida com sucesso no banco.", postagem.getId());
-			
+
 			return ResponseEntity.created(uri).body(postagemDTO);
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -96,20 +96,19 @@ public class PostagemController {
 	public ResponseEntity<PostagemDTO> alterarPostagem(@PathVariable Integer id, @RequestBody PostagemForm postagemForm,
 			UriComponentsBuilder uriBuilder) {
 		try {
-			Postagem postagem = postagemRepository.getReferenceById(id);
-			
+			Postagem postagem = postagemService.findPost(id);
+
 			postagem.setTexto(postagemForm.getTexto());
-			
-			postagemRepository.save(postagem);
-			
+
+			postagemService.savePost(postagem);
+
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-			
 
 			log.info("Alterações na postagem com id {} realizadas com sucesso.", postagem.getId());
-			
+
 			return ResponseEntity.ok(postagemDTO);
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -118,17 +117,17 @@ public class PostagemController {
 	public ResponseEntity<PostagemDTO> deletarPostagem(@PathVariable Integer id, @RequestBody PostagemForm postagemForm,
 			UriComponentsBuilder uriBuilder) {
 		try {
-			Postagem postagem = postagemRepository.getReferenceById(id);
-			
-			postagemRepository.delete(postagem);
-			
+			Postagem postagem = postagemService.findPost(id);
+
+			postagemService.deletePost(postagem);
+
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-			
-	        log.info("Postagem com id {} removida com sucesso.", id);
-			
+
+			log.info("Postagem com id {} removida com sucesso.", id);
+
 			return ResponseEntity.ok(postagemDTO);
 		} catch (Exception e) {
-	        log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
+			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return ResponseEntity.notFound().build();
 		}
 	}
