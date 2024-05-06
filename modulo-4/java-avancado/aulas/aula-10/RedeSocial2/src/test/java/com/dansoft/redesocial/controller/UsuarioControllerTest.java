@@ -89,11 +89,11 @@ public class UsuarioControllerTest {
 
 	@Test
 	void inserirUsuario_deveRetornarBadRequestCasoDadosErrados() throws Exception {
-		UsuarioForm usuarioForm = new UsuarioForm(); // Sem dado
+		UsuarioForm usuarioForm = new UsuarioForm(); 
 
 		Usuario usuarioSalvo = usuarioForm.toUsuario();
 
-		when(usuarioService.saveUser(usuarioSalvo)).thenReturn(any(Usuario.class));
+		when(usuarioService.saveUser(any(Usuario.class))).thenReturn(usuarioSalvo);
 
 		mockMvc.perform(post("/usuarios/").content(objectMapper.writeValueAsString(usuarioForm))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
