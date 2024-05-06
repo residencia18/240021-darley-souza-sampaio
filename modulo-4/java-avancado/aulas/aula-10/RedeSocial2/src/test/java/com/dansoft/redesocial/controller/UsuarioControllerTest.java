@@ -1,6 +1,7 @@
 package com.dansoft.redesocial.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -11,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.coyote.BadRequestException;
@@ -207,6 +207,50 @@ public class UsuarioControllerTest {
 	    mockMvc.perform(get("/usuarios/{id}/amigos/", 2))
 	            .andExpect(status().isNotFound());
 	}
+
+	@Test
+	void adicionarAmigo_deveSalvarOAmigoEretornarOkQuandoValido() throws Exception {		
+		mockMvc.perform(post("/usuarios/{id}/amigos/{amigoId}", 1, 2).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
 	
+	@Test
+	void adicionarAmigo_deveRetornarNotFoundQuandoUsuarioOuAmigoNaoEncontrado() throws Exception {		
+	    doThrow(NotFoundException.class).when(usuarioService).addFriend(1, 2);
+		
+		mockMvc.perform(post("/usuarios/{id}/amigos/{amigoId}", 1, 2).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
 	
+	@Test
+	void adicionarAmigo_deveRetornarNotFoundQuandoAmigoJaPresente() throws Exception {		
+	    doThrow(Exception.class).when(usuarioService).addFriend(1, 2);
+		
+		mockMvc.perform(post("/usuarios/{id}/amigos/{amigoId}", 1, 2).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void removerAmigo_deveSalvarOAmigoEretornarOkQuandoValido() throws Exception {		
+		mockMvc.perform(delete("/usuarios/{id}/amigos/{amigoId}", 1, 2).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	void removerAmigo_deveRetornarNotFoundQuandoUsuarioOuAmigoNaoEncontrado() throws Exception {		
+	    doThrow(NotFoundException.class).when(usuarioService).removeFriend(1, 2);
+		
+		mockMvc.perform(delete("/usuarios/{id}/amigos/{amigoId}", 1, 2).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void removerAmigo_deveRetornarNotFoundQuandoAmigoJaPresente() throws Exception {		
+	    doThrow(Exception.class).when(usuarioService).removeFriend(1, 2);
+		
+		mockMvc.perform(delete("/usuarios/{id}/amigos/{amigoId}", 1, 2).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
+	}
+	
+
 }
