@@ -1,10 +1,8 @@
 package com.dansoft.redesocial.controller;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
 import com.dansoft.redesocial.controller.dto.UsuarioDTO;

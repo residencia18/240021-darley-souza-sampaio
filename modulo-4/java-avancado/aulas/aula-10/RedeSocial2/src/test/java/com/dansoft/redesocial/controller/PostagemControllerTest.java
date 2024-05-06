@@ -1,123 +1,163 @@
 package com.dansoft.redesocial.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import com.dansoft.redesocial.controller.Form.PostagemForm;
 import com.dansoft.redesocial.controller.dto.PostagemDTO;
 import com.dansoft.redesocial.model.Postagem;
 import com.dansoft.redesocial.model.Usuario;
-import com.dansoft.redesocial.repository.PostagemRepository;
+import com.dansoft.redesocial.service.PostagemService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 
+@WebMvcTest(PostagemController.class)
 class PostagemControllerTest {
 
-	@InjectMocks
-	private PostagemController postagemController;
+	@MockBean
+	private PostagemService postagemService;
 
-	@Mock
-	private PostagemRepository postagemRepository;
+	@Autowired
+	private MockMvc mockMvc;
 
-	@Mock
-	private UriComponentsBuilder uriBuilder;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-	@Mock
-	private PostagemForm postagemForm;
+	@Autowired
+	private Faker faker;
 
-	private Postagem postagem1 = new Postagem();
-	private Postagem postagem2 = new Postagem();
-	
-	private Usuario usuario1 = new Usuario();
+	@TestConfiguration
+	static class FakerTestConfig {
 
-	@BeforeEach
-	public void setUp() {
-		MockitoAnnotations.openMocks(this);
+		@Bean
+		public Faker faker() {
+			return new Faker(new Locale("pt-BR"));
+		}
 
-		usuario1.setId((long) 1);
-		usuario1.setNome("User1");
-		usuario1.setEmail("User1@gmail.com");
-		usuario1.setSenha("123@User1");
-
-		postagem1.setId((long) 1);
-		postagem1.setTexto("Teste");
-		postagem1.setCodigo("TESTE1");
-		postagem1.setUsuario(usuario1);
-		
-
-		postagem2.setId((long) 2);
-		postagem2.setTexto("Teste2");
-		postagem2.setCodigo("TESTE2");
-		postagem2.setUsuario(usuario1);
 	}
-	
-	@Test
-	public void testListarPostagens() {
-		List<Postagem> postagens = new ArrayList<>();
 
-		postagens.add(postagem1);
-		postagens.add(postagem2);
-		
-		when(postagemRepository.findAll()).thenReturn(postagens);
+	private Usuario geradorUsuarioFaker() {
+		Usuario usuario = new Usuario();
 
-		List<PostagemDTO> response = postagemController.listaPostagensNome(null);
+		usuario.setId(faker.number().randomNumber());
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha(faker.internet().password(8, 16, true, true, true));
 
-		assertEquals(2, response.size());
-		assertEquals("Teste", response.get(0).getTexto());
-		assertEquals("Teste2", response.get(1).getTexto());
+		return usuario;
 	}
-	
+
+	private PostagemForm geradorPostagemFormFaker() {
+		PostagemForm postagemForm = new PostagemForm();
+		postagemForm.setTexto(faker.lorem().toString());
+		postagemForm.setUsuario(geradorUsuarioFaker());
+		return postagemForm;
+	}
+
 	@Test
-    public void testListarPostagem() {
-        when(postagemRepository.getReferenceById(1)).thenReturn(postagem1);
+	void inserirPostagem_deveSalvarPostagemEretornarCreated() throws Exception {
+		PostagemForm postagemForm = geradorPostagemFormFaker();
 
-        ResponseEntity<PostagemDTO> response = postagemController.listaPostagem(1, uriBuilder);
+		Postagem postagemSalva = postagemForm.toPostagem();
+		postagemSalva.setId(1L);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(postagem1.getId(), response.getBody().getId());
-        assertEquals(postagem1.getTexto(), response.getBody().getTexto());
-        assertEquals(postagem1.getDataPostagem(), response.getBody().getDataPostagem());
-        assertEquals(postagem1.getCodigo(), response.getBody().getCodigo());
-        assertEquals(postagem1.getUsuario(), response.getBody().getUsuario());
+		when(postagemService.savePost(any(Postagem.class))).thenReturn(postagemSalva);
+
+		mockMvc.perform(post("/postagens/").content(objectMapper.writeValueAsString(postagemForm))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated())
+				.andExpect(content().json(objectMapper.writeValueAsString(new PostagemDTO(postagemSalva))));
+	}
+
+	@Test
+	void inserirPostagem_deveRetornarBadRequestCasoExcecaoLancada() throws Exception {
+	    when(postagemService.savePost(any(Postagem.class))).thenThrow(RuntimeException.class);
+	    
+	    mockMvc.perform(post("/postagens/")
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .content(objectMapper.writeValueAsString(new PostagemForm())))
+	            .andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void listarPostagem_deveRetornarTodaListaDeUsuariosAtivos() throws Exception {
+		List<Postagem> listaPostagens = new ArrayList<>();
+		listaPostagens.add(new Postagem());
+		listaPostagens.add(new Postagem());
+
+		when(postagemService.findAll(any(Integer.class))).thenReturn(listaPostagens);
+
+		mockMvc.perform(get("/postagens/{id}", 1).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(listaPostagens)));
+	}
+
+	@Test
+	void listarPostagem_deveRetornarNotFoundCasoListaVazia() throws Exception {
+		when(postagemService.findAll(any(Integer.class))).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/postagens/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+	}
+
+	@Test
+	void alterarPostagem_deveAlterarPostagemERetornarOk() throws Exception {
+		PostagemForm postagemForm = geradorPostagemFormFaker();
+
+		Postagem postagemSalva = postagemForm.toPostagem();
+		postagemSalva.setId(1L);
+
+		when(postagemService.updatePost(any(Integer.class), any(PostagemForm.class))).thenReturn(postagemSalva);
+
+		mockMvc.perform(put("/postagens/{id}", 1L).content(objectMapper.writeValueAsString(postagemForm))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(new PostagemDTO(postagemSalva))));
+	}
+
+	@Test
+    void alterarPostagem_deveRetornarNotFoundQuandoPostagemNaoEncontrada() throws Exception {
+        when(postagemService.updatePost(any(Integer.class), any(PostagemForm.class))).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(put("/postagens/{id}", 1)
+                .content("{\"texto\": \"Novo texto da postagem\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+	@Test
+    void deletarPostagem_deveRetornarOkQuandoPostagemDeletada() throws Exception {
+        Postagem postagem = new Postagem();
+        when(postagemService.findPost(any(Integer.class))).thenReturn(postagem);
+
+        mockMvc.perform(delete("/postagens/{id}", 1))
+                .andExpect(status().isOk());
     }
 	
-	@Test
-    public void testInserirPostagemIncorreta() throws Exception {
-        when(postagemRepository.save(any(Postagem.class))).thenReturn(postagem1);
+	 @Test
+	    void deletarPostagem_deveRetornarNotFoundQuandoPostagemNaoEncontrada() throws Exception {
+	        when(postagemService.findPost(any(Integer.class))).thenThrow(NotFoundException.class);
 
-        ResponseEntity<?> response = postagemController.inserirPostagem(postagemForm, uriBuilder);
-
-        verify(postagemRepository).save(any());
-        
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-	}
-	
-	@Test
-    public void testInserirPostagemCorreta() throws Exception {
-		postagemForm.setTexto("Teste");
-		postagemForm.setUsuario(usuario1);
-		
-        when(postagemRepository.save(any(Postagem.class))).thenReturn(postagem1);
-
-        ResponseEntity<?> response = postagemController.inserirPostagem(postagemForm, uriBuilder);
-        
-        System.out.println(response);
-
-        verify(postagemRepository).save(any());
-        
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-	}
+	        mockMvc.perform(delete("/postagens/{id}", 1))
+	                .andExpect(status().isNotFound());
+	    }
 
 }
