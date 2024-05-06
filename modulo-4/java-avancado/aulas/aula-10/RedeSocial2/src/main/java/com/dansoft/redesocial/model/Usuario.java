@@ -50,7 +50,11 @@ public class Usuario {
 	@Pattern(regexp = ".*\\d.*", message = "A senha deve conter pelo menos um dígito")
 	@Pattern(regexp = ".*[@#$%^&+=.!].*", message = "A senha deve conter pelo menos um caractere especial")
 	private String senha;
-
+	
+	@Column(name = "deleted", nullable = false)
+	private Boolean deleted = false;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Postagem> postagens;
 
