@@ -1,101 +1,212 @@
 package com.dansoft.redesocial.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
 import com.dansoft.redesocial.controller.dto.UsuarioDTO;
 import com.dansoft.redesocial.model.Usuario;
-import com.dansoft.redesocial.repository.UsuarioRepository;
+import com.dansoft.redesocial.service.UsuarioService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Faker;
 
+@WebMvcTest(UsuarioController.class)
 public class UsuarioControllerTest {
 
-	@InjectMocks
-	private UsuarioController usuarioController;
+	@MockBean
+	private UsuarioService usuarioService;
 
-	@Mock
-	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private MockMvc mockMvc;
 
-	@Mock
-	private UriComponentsBuilder uriBuilder;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-	@Mock
-	private UsuarioForm usuarioForm;
+	@Autowired
+	private Faker faker;
 
-	private Usuario usuario1 = new Usuario();
-	private Usuario usuario2 = new Usuario();
+	@TestConfiguration
+	static class FakerTestConfig {
 
-	@BeforeEach
-	public void setUp() {
-		MockitoAnnotations.openMocks(this);
-		
-		usuario1.setId((long)1);
-		usuario1.setNome("User1");
-		usuario1.setEmail("User1@gmail.com");
-		usuario1.setSenha("123@User1");
+		@Bean
+		public Faker faker() {
+			return new Faker(new Locale("pt-BR"));
+		}
 
-		usuario2.setId((long)2);
-		usuario2.setNome("User2");
-		usuario2.setEmail("User2@gmail.com");
-		usuario2.setSenha("123@User2");
+	}
+
+	private Usuario geradorUsuarioFaker() {
+		Usuario usuario = new Usuario();
+		usuario.setNome(faker.name().fullName());
+		usuario.setEmail(faker.internet().emailAddress());
+		usuario.setSenha("123@Teste");
+		return usuario;
+	}
+
+	private UsuarioForm geradorUsuarioFormFaker() {
+		UsuarioForm usuarioForm = new UsuarioForm();
+		usuarioForm.setNome(faker.name().fullName());
+		usuarioForm.setEmail(faker.internet().emailAddress());
+		usuarioForm.setSenha("123@Teste");
+		return usuarioForm;
+	}
+
+	@Test
+	void inserirUsuario_deveSalvarUsuarioEretornarCreated() throws Exception {
+		UsuarioForm usuarioForm = geradorUsuarioFormFaker();
+
+		Usuario usuarioSalvo = usuarioForm.toUsuario();
+		usuarioSalvo.setId(1L);
+
+		when(usuarioService.saveUser(any(Usuario.class))).thenReturn(usuarioSalvo);
+
+		mockMvc.perform(post("/usuarios/").content(objectMapper.writeValueAsString(usuarioForm))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated())
+				.andExpect(content().json(objectMapper.writeValueAsString(new UsuarioDTO(usuarioSalvo))));
+	}
+
+	@Test
+	void inserirUsuario_deveRetornarBadRequestCasoDadosErrados() throws Exception {
+		UsuarioForm usuarioForm = new UsuarioForm(); // Sem dado
+
+		Usuario usuarioSalvo = usuarioForm.toUsuario();
+
+		when(usuarioService.saveUser(usuarioSalvo)).thenReturn(any(Usuario.class));
+
+		mockMvc.perform(post("/usuarios/").content(objectMapper.writeValueAsString(usuarioForm))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void listarUsuario_deveRetornarTodaListaDeUsuariosAtivos() throws Exception {
+		Usuario usuario = geradorUsuarioFaker();
+		usuario.setId(faker.number().randomNumber());
+
+		when(usuarioService.findAll()).thenReturn(Arrays.asList(usuario));
+
+		mockMvc.perform(get("/usuarios/")).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(new UsuarioDTO(usuario)))));
+	}
+
+	@Test
+	void listarUsuario_deveRetornarUmUsuario() throws Exception {
+		Usuario usuario = geradorUsuarioFaker();
+		usuario.setId(1L);
+
+		when(usuarioService.findUser(1)).thenReturn(usuario);
+
+		mockMvc.perform(get("/usuarios/{id}", 1))
+				.andExpect(content().json(objectMapper.writeValueAsString(new UsuarioDTO(usuario))))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void listarUsuario_deveRetornarNotFoundCasoNaoEncontrado() throws Exception {
+		when(usuarioService.findUser(1)).thenThrow(NotFoundException.class);
+
+		mockMvc.perform(get("/usuarios/{id}", 1)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	void deletarUsuario_deveRetornarUsuarioDeletadoCasoEncontrado() throws Exception {
+		Usuario usuario = geradorUsuarioFaker();
+		usuario.setId(1L);
+
+		when(usuarioService.deleteUser(1)).thenReturn(usuario);
+
+		mockMvc.perform(delete("/usuarios/{id}", 1))
+				.andExpect(content().json(objectMapper.writeValueAsString(new UsuarioDTO(usuario))))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void deletarUsuario_deveRetornarNotFoundCasoNaoEncontrado() throws Exception {
+		when(usuarioService.findUser(1)).thenThrow(NotFoundException.class);
+
+		mockMvc.perform(delete("/usuarios/{id}", 1)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	void alterarUsuario_deveAlterarUsuarioEretornarOk() throws Exception {
+		UsuarioForm usuarioForm = geradorUsuarioFormFaker();
+
+		Usuario usuarioAtualizado = usuarioForm.toUsuario();
+
+		usuarioAtualizado.setId(1L);
+		usuarioAtualizado.setNome(faker.name().fullName());
+
+		when(usuarioService.userUpdate(any(Integer.class), any(UsuarioForm.class))).thenReturn(usuarioAtualizado);
+
+		mockMvc.perform(put("/usuarios/{id}", 1).content(objectMapper.writeValueAsString(usuarioForm))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(content().json(objectMapper.writeValueAsString(new UsuarioDTO(usuarioAtualizado))));
+	}
+
+	@Test
+	void alterarUsuario_deveRetornarNotFoundSeNaoEncontrado() throws Exception {
+		UsuarioForm usuarioForm = geradorUsuarioFormFaker();
+
+		when(usuarioService.userUpdate(any(Integer.class), any(UsuarioForm.class))).thenThrow(NotFoundException.class);
+
+		mockMvc.perform(put("/usuarios/{id}", 2).content(objectMapper.writeValueAsString(usuarioForm))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	void alterarUsuario_deveRetornarBadRequestCasoDadoErrado() throws Exception {
+		UsuarioForm usuarioForm = geradorUsuarioFormFaker();
+
+		Usuario usuarioAtualizado = usuarioForm.toUsuario();
+
+		usuarioAtualizado.setId(1L);
+		usuarioAtualizado.setNome(null);
+
+		when(usuarioService.userUpdate(any(Integer.class), any(UsuarioForm.class)))
+				.thenThrow(BadRequestException.class);
+
+		mockMvc.perform(put("/usuarios/{id}", 1).content(objectMapper.writeValueAsString(usuarioForm))
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void listarAmigos_deveRetornarListaAmigosCheiaOuVazia() throws Exception {
+		Usuario usuario = geradorUsuarioFaker();
+		usuario.setId(1L);
+
+		when(usuarioService.listFriends(any(Integer.class))).thenReturn(Collections.emptyList());
+
+		mockMvc.perform(get("/usuarios/{id}/amigos/", 1)).andExpect(status().isOk()).andExpect(content().json("[]"));
+	}
+
+	@Test
+	void listarAmigos_deveRetornarBadRequestCasoSolicitacaoErrada() throws Exception {
+	    when(usuarioService.listFriends(2)).thenThrow(NotFoundException.class);
+
+	    mockMvc.perform(get("/usuarios/{id}/amigos/", 2))
+	            .andExpect(status().isNotFound());
 	}
 	
-	@Test
-	public void testListarUsuarios() {
-		List<Usuario> usuarios = new ArrayList<>();
-
-		usuarios.add(usuario1);
-		usuarios.add(usuario2);
-		
-		when(usuarioRepository.save(usuario1));
-		when(usuarioRepository.save(usuario2));
-
-		when(usuarioRepository.findAll()).thenReturn(usuarios);
-		
-
-		List<UsuarioDTO> response = usuarioController.listaUsuarios(null);
-
-		assertEquals(2, response.size());
-		assertEquals("User1", response.get(0).getNome());
-		assertEquals("User2", response.get(1).getNome());
-	}
-
-	@Test
-    public void testListarUsuario() {
-        when(usuarioRepository.getReferenceById(1)).thenReturn(usuario1);
-
-        ResponseEntity<UsuarioDTO> response = usuarioController.listarUsuario(1, uriBuilder);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(usuario1.getId(), response.getBody().getId());
-        assertEquals(usuario1.getNome(), response.getBody().getNome());
-        assertEquals(usuario1.getEmail(), response.getBody().getEmail());
-    }
 	
-	@Test
-    public void testInserirUsuarioIncorreto() {
-        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario1);
-
-        ResponseEntity<?> response = usuarioController.inserirUsuario(usuarioForm, uriBuilder);
-
-        verify(usuarioRepository).save(any());
-        
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-	}
-
 }
