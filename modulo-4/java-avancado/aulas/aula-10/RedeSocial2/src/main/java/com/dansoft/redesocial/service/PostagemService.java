@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.dansoft.redesocial.controller.Form.PostagemForm;
 import com.dansoft.redesocial.model.Postagem;
+import com.dansoft.redesocial.model.Usuario;
 import com.dansoft.redesocial.repository.PostagemRepository;
 
 @Service
@@ -16,11 +18,18 @@ public class PostagemService {
 	@Autowired
 	private PostagemRepository postagemRepository;
 
-	public List<Postagem> findAll() {
-		return postagemRepository.findAll();
+	@Autowired
+	private UsuarioService usuarioService;
+
+	public List<Postagem> findAll(Integer id) throws NotFoundException {
+		Usuario usuario = usuarioService.findUser(id);
+
+		if (usuario.getPostagens().isEmpty())
+			throw new NotFoundException();
+
+		return usuario.getPostagens();
 	}
 
-	
 	public Postagem findPost(Integer id) throws NotFoundException {
 		Optional<Postagem> postagemOptional = postagemRepository.findById(id);
 
@@ -35,6 +44,17 @@ public class PostagemService {
 
 	public Postagem savePost(Postagem post) {
 		return postagemRepository.save(post);
+	}
+
+	public Postagem updatePost(Integer id, PostagemForm postagemForm) throws NotFoundException {
+		Postagem postagem = findPost(id);
+		
+		if(postagem == null)
+			throw new NotFoundException();
+
+		postagem.setTexto(postagemForm.getTexto());
+		
+		return savePost(postagem);
 	}
 
 	public void deletePost(Postagem post) {
