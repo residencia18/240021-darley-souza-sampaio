@@ -1,6 +1,5 @@
 package com.dansoft.redesocial.controller;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +13,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dansoft.redesocial.controller.Form.PostagemForm;
 import com.dansoft.redesocial.controller.dto.PostagemDTO;
 import com.dansoft.redesocial.model.Postagem;
 import com.dansoft.redesocial.service.PostagemService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -32,103 +30,74 @@ public class PostagemController {
 	@Autowired
 	private PostagemService postagemService;
 
-	@GetMapping
-	public List<PostagemDTO> listaPostagensNome(@RequestParam(required = false) String codigo) {
-		List<Postagem> listaPostagens;
-		if (codigo != null && !codigo.isEmpty())
-			listaPostagens = postagemService.findByCode(codigo);
-		else
-			listaPostagens = (List<Postagem>) postagemService.findAll();
-
-		List<PostagemDTO> lista = new ArrayList<>();
-		
-		for (Postagem postagem : listaPostagens) {
-			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-			lista.add(postagemDTO);
-		}
-		
-		return lista;
-	}
-
 	@GetMapping("/{id}")
-	public ResponseEntity<PostagemDTO> listaPostagem(@PathVariable Integer id, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> listaPostagens(@PathVariable Integer id) {
 		try {
-			Postagem postagem = postagemService.findPost(id);
 
-			PostagemDTO postagemDTO = new PostagemDTO(postagem);
+			List<Postagem> listaPostagens;
 
-			uriBuilder.path("/postagens/{id}");
+			listaPostagens = (List<Postagem>) postagemService.findAll(id);
 
-			log.info("Postagem com id {} retornada para consulta.", id);
+			List<PostagemDTO> lista = new ArrayList<>();
 
-			return ResponseEntity.ok(postagemDTO);
+			for (Postagem postagem : listaPostagens) {
+				PostagemDTO postagemDTO = new PostagemDTO(postagem);
+				lista.add(postagemDTO);
+			}
+
+			return new ResponseEntity<>(lista, HttpStatus.OK);
 		} catch (Exception e) {
-			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
-			return ResponseEntity.notFound().build();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+
 
 	@PostMapping
-	public ResponseEntity<?> inserirPostagem(@RequestBody PostagemForm postagemForm, UriComponentsBuilder uriBuilder)
-			throws Exception {
+	public ResponseEntity<?> inserirPostagem(@RequestBody @Valid PostagemForm postagemForm) throws Exception {
 		try {
 
 			Postagem postagem = postagemForm.toPostagem();
 
-			postagemService.savePost(postagem);
-
-			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-
-			uriBuilder.path("/postagens/{id}");
-
-			URI uri = uriBuilder.buildAndExpand(postagem.getId()).toUri();
+			PostagemDTO postagemDTO = new PostagemDTO(postagemService.savePost(postagem));
 
 			log.info("Postagem com id {} inserida com sucesso no banco.", postagem.getId());
 
-			return ResponseEntity.created(uri).body(postagemDTO);
+			return new ResponseEntity<PostagemDTO>(postagemDTO, HttpStatus.CREATED);
 		} catch (Exception e) {
 			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<PostagemDTO> alterarPostagem(@PathVariable Integer id, @RequestBody PostagemForm postagemForm,
-			UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> alterarPostagem(@PathVariable Integer id,
+			@RequestBody PostagemForm postagemForm) {
 		try {
-			Postagem postagem = postagemService.findPost(id);
-
-			postagem.setTexto(postagemForm.getTexto());
-
-			postagemService.savePost(postagem);
-
+			Postagem postagem = postagemService.updatePost(id, postagemForm);
 			PostagemDTO postagemDTO = new PostagemDTO(postagem);
 
-			log.info("Alterações na postagem com id {} realizadas com sucesso.", postagem.getId());
+			log.info("Alterações na postagem com id {} realiza das com sucesso.", postagem.getId());
 
-			return ResponseEntity.ok(postagemDTO);
+			return new ResponseEntity<>(postagemDTO, HttpStatus.OK);
 		} catch (Exception e) {
 			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
-			return ResponseEntity.notFound().build();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<PostagemDTO> deletarPostagem(@PathVariable Integer id, @RequestBody PostagemForm postagemForm,
-			UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> deletarPostagem(@PathVariable Integer id) {
 		try {
 			Postagem postagem = postagemService.findPost(id);
 
 			postagemService.deletePost(postagem);
 
-			PostagemDTO postagemDTO = new PostagemDTO(postagem);
-
 			log.info("Postagem com id {} removida com sucesso.", id);
 
-			return ResponseEntity.ok(postagemDTO);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
-			return ResponseEntity.notFound().build();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 }
