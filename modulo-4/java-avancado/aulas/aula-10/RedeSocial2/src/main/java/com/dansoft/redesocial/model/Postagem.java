@@ -1,7 +1,8 @@
 package com.dansoft.redesocial.model;
 
 import java.util.Date;
-import java.util.Random;
+
+import com.github.javafaker.Faker;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,16 +52,13 @@ public class Postagem {
 		this.texto = texto;
 		this.usuario = usuario;
 	}
-	
+
 	public static String gerarCodigoAleatorio() {
-		StringBuilder codigo = new StringBuilder();
-		Random random = new Random();
+		Faker faker = new Faker();
 
-		for (int i = 0; i < 11; i++) {
-			codigo.append(random.nextInt(10));
-		}
-
-		return codigo.toString();
+		String codigo = faker.regexify("[A-Z]{5}[0-9]{5}");
+		
+		return codigo;
 	}
 
 }
