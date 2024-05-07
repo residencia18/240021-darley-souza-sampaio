@@ -9,5 +9,5 @@ import com.dansoft.redesocial.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-	List<Usuario> findByNome(String nome);
+	
 }
