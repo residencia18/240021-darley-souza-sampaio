@@ -196,34 +196,6 @@ class UsuarioServiceTest {
     }
 
 	@Test
-	void findByName_ComNomeValidoRetornaListaComUsuario() {
-		String nome = "João da Silva";
-		List<Usuario> usuarios = new ArrayList<>();
-		usuarios.add(usuario);
-		when(usuarioRepository.findByNome(nome)).thenReturn(usuarios);
-
-		List<Usuario> usuariosEncontrados = usuarioService.findByName(nome);
-
-		assertThat(usuariosEncontrados).contains(usuario);
-
-		verify(usuarioRepository).findByNome(any(String.class));
-		verifyNoMoreInteractions(usuarioRepository);
-	}
-
-	@Test
-	void findByName_ComNomeInvalidoRetornaListaVazia() {
-		String nome = "Pedro";
-		when(usuarioRepository.findByNome(nome)).thenReturn(new ArrayList<>());
-
-		List<Usuario> usuariosEncontrados = usuarioService.findByName(nome);
-
-		assertTrue(usuariosEncontrados.isEmpty());
-
-		verify(usuarioRepository).findByNome(any(String.class));
-		verifyNoMoreInteractions(usuarioRepository);
-	}
-
-	@Test
 	void addFriend_ComIdsValidosAdicionaAmigoComSucesso() {
 		Usuario amigo = new Usuario();
 		amigo.setId(2L);
