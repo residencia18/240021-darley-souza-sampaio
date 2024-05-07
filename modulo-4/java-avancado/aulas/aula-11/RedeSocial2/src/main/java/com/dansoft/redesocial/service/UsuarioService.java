@@ -85,10 +85,6 @@ public class UsuarioService {
 		return amigosDTO;
 	}
 
-	public List<Usuario> findByName(String name) {
-		return usuarioRepository.findByNome(name);
-	}
-
 	public void addFriend(Integer userId, Integer amigoId) throws NotFoundException, Exception {
 	    Usuario usuario = findUser(userId);
 	    Usuario amigo = findUser(amigoId);
