@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,9 @@ import com.dansoft.redesocial.model.Usuario;
 import com.dansoft.redesocial.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService {
+@Primary
+@Qualifier("v1")
+public class UsuarioServiceV1 {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
