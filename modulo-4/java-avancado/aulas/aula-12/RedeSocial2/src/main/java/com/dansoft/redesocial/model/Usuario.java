@@ -1,5 +1,6 @@
 package com.dansoft.redesocial.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,12 +57,12 @@ public class Usuario {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	private List<Postagem> postagens;
+	private List<Postagem> postagens = new ArrayList<Postagem>();
 
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "amigos", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "amigo_id"))
-	private List<Usuario> amigos;
+	private List<Usuario> amigos = new ArrayList<Usuario>();
 
 	public Usuario(String nome, String email, String password, List<Usuario> amigos) {
 		this.nome = nome;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
 import com.dansoft.redesocial.controller.dto.UsuarioDTO;
 import com.dansoft.redesocial.model.Usuario;
-import com.dansoft.redesocial.service.UsuarioService;
+import com.dansoft.redesocial.service.UsuarioServiceV1;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/usuarios/")
+@RequestMapping("/v1/usuarios/")
 @Slf4j
-public class UsuarioController {
+public class UsuarioControllerV1 {
 
 	@Autowired
-	private UsuarioService usuarioService;
+	@Qualifier("usuarioServiceV1")
+	private UsuarioServiceV1 usuarioService;
 
 	@GetMapping
 	public ResponseEntity<List<UsuarioDTO>> listaUsuarios() {
