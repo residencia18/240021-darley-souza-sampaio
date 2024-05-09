@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class UsuarioServiceV1 {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+    @Cacheable("usuario")
 	public List<Usuario> findAll() {
 		List<Usuario> usuarios = usuarioRepository.findAll();
 
