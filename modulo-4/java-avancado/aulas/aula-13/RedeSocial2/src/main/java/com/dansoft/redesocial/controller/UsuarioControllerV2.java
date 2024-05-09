@@ -1,11 +1,15 @@
 package com.dansoft.redesocial.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
@@ -48,6 +53,16 @@ public class UsuarioControllerV2 {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	@GetMapping("/page/")
+	public ResponseEntity<?> listaUsuariosPorPagina(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		Page<Usuario> employeePage = usuarioService.findAllPageable(PageRequest.of(page, size));
+		if (employeePage.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(employeePage, HttpStatus.OK);
+	}
+
 	@GetMapping("/nome/{name}")
 	public ResponseEntity<?> listaUsuarioName(@PathVariable String name) {
 		try {
@@ -77,6 +92,19 @@ public class UsuarioControllerV2 {
 		} catch (Exception e) {
 			log.error("Ocorreu um erro ao tentar realizar a operação: ", e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/ativos/")
+	public ResponseEntity<?> listaUsuariosAtivos(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size) {
+
+		try {
+			Map<String, Object> usuariosAtivos = usuarioService.findAllActives(page, size);
+
+			return new ResponseEntity<>(usuariosAtivos, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
