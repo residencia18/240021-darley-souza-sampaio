@@ -38,7 +38,7 @@ class PostagemServiceTest {
 	private PostagemRepository postagemRepository;
 
 	@Mock
-	private UsuarioService usuarioService;
+	private UsuarioServiceV1 usuarioService;
 
 	@InjectMocks
 	private PostagemService postagemService;
