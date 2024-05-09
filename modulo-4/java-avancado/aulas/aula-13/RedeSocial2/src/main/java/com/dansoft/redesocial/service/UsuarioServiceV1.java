@@ -19,7 +19,7 @@ import com.dansoft.redesocial.repository.UsuarioRepository;
 
 @Service
 @Primary
-@Qualifier("v1")
+@Qualifier("usuarioServiceV1")
 public class UsuarioServiceV1 {
 
 	@Autowired
@@ -31,7 +31,7 @@ public class UsuarioServiceV1 {
 		List<Usuario> usuariosAtivos = new ArrayList<>();
 
 		for (Usuario usuario : usuarios) {
-			if (!usuario.getDeleted())
+			if (usuario.getIsActive())
 				usuariosAtivos.add(usuario);
 		}
 
@@ -54,10 +54,10 @@ public class UsuarioServiceV1 {
 	public Usuario deleteUser(Integer id) throws NotFoundException {
 		Usuario usuario = findUser(id);
 
-		if (usuario == null || usuario.getDeleted() == true)
+		if (usuario == null || usuario.getIsActive() == false)
 			throw new NotFoundException();
 
-		usuario.setDeleted(true);
+		usuario.setIsActive(false);
 
 		return usuarioRepository.save(usuario);
 	}
@@ -65,7 +65,7 @@ public class UsuarioServiceV1 {
 	public Usuario userUpdate(Integer id, UsuarioForm usuarioForm) throws NotFoundException, BadRequestException {
 		Usuario usuario = findUser(id);
 
-		if (usuario == null || usuario.getDeleted() == true)
+		if (usuario == null || usuario.getIsActive() == false)
 			throw new NotFoundException();
 
 		usuario.setNome(usuarioForm.getNome());
@@ -81,65 +81,63 @@ public class UsuarioServiceV1 {
 
 		List<UsuarioDTO> amigosDTO = new ArrayList<>();
 
-	    if (usuario.getAmigos() != null) {
-	        amigosDTO = usuario.getAmigos().stream()
-	                .map(UsuarioDTO::new)
-	                .collect(Collectors.toList());
-	    }
+		if (usuario.getAmigos() != null) {
+			amigosDTO = usuario.getAmigos().stream().map(UsuarioDTO::new).collect(Collectors.toList());
+		}
 		return amigosDTO;
 	}
 
 	public void addFriend(Integer userId, Integer amigoId) throws NotFoundException, Exception {
-	    Usuario usuario = findUser(userId);
-	    Usuario amigo = findUser(amigoId);
+		Usuario usuario = findUser(userId);
+		Usuario amigo = findUser(amigoId);
 
-	    if (usuario == null || usuario.getDeleted() || amigo == null || amigo.getDeleted()) {
-	        throw new NotFoundException();
-	    }
-	    
-	    if (usuario.getAmigos() == null) {
-	        usuario.setAmigos(new ArrayList<>());
-	    }
+		if (usuario == null || !usuario.getIsActive() || amigo == null || !amigo.getIsActive()) {
+			throw new NotFoundException();
+		}
 
-	    if (usuario.getAmigos().contains(amigo)) {
-	        throw new Exception("Usuário já presente na lista.");
-	    }
+		if (usuario.getAmigos() == null) {
+			usuario.setAmigos(new ArrayList<>());
+		}
 
-	    usuario.getAmigos().add(amigo);
-	    saveUser(usuario);
+		if (usuario.getAmigos().contains(amigo)) {
+			throw new Exception("Usuário já presente na lista.");
+		}
 
-	    if (amigo.getAmigos() == null) {
-	        amigo.setAmigos(new ArrayList<>());
-	    }
-	    
-	    amigo.getAmigos().add(usuario);
-	    saveUser(amigo);
+		usuario.getAmigos().add(amigo);
+		saveUser(usuario);
+
+		if (amigo.getAmigos() == null) {
+			amigo.setAmigos(new ArrayList<>());
+		}
+
+		amigo.getAmigos().add(usuario);
+		saveUser(amigo);
 	}
 
 	public void removeFriend(Integer userId, Integer amigoId) throws NotFoundException, Exception {
-	    Usuario usuario = findUser(userId);
-	    Usuario amigo = findUser(amigoId);
+		Usuario usuario = findUser(userId);
+		Usuario amigo = findUser(amigoId);
 
-	    if (usuario == null || usuario.getDeleted() || amigo == null || amigo.getDeleted()) {
-	        throw new NotFoundException();
-	    }
+		if (usuario == null || !usuario.getIsActive() || amigo == null || !amigo.getIsActive()) {
+			throw new NotFoundException();
+		}
 
-	    if (usuario.getAmigos() == null) {
-	        usuario.setAmigos(new ArrayList<>());
-	    }
+		if (usuario.getAmigos() == null) {
+			usuario.setAmigos(new ArrayList<>());
+		}
 
-	    if (amigo.getAmigos() == null) {
-	        amigo.setAmigos(new ArrayList<>());
-	    }
+		if (amigo.getAmigos() == null) {
+			amigo.setAmigos(new ArrayList<>());
+		}
 
-	    if (!usuario.getAmigos().contains(amigo)) {
-	        throw new NotFoundException();
-	    }
+		if (!usuario.getAmigos().contains(amigo)) {
+			throw new NotFoundException();
+		}
 
-	    usuario.getAmigos().remove(amigo);
-	    saveUser(usuario);
+		usuario.getAmigos().remove(amigo);
+		saveUser(usuario);
 
-	    amigo.getAmigos().remove(usuario);
-	    saveUser(amigo);
+		amigo.getAmigos().remove(usuario);
+		saveUser(amigo);
 	}
 }
