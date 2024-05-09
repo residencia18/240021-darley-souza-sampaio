@@ -32,10 +32,10 @@ import com.dansoft.redesocial.repository.UsuarioRepository;
 import com.github.javafaker.Faker;
 
 @ExtendWith(MockitoExtension.class)
-class UsuarioServiceTest {
+class UsuarioServiceV1Test {
 
 	@InjectMocks
-	private UsuarioService usuarioService;
+	private UsuarioServiceV1 usuarioService;
 
 	@Mock
 	private UsuarioRepository usuarioRepository;
