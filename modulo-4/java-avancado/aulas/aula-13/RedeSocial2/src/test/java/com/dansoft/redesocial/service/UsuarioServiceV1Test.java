@@ -128,7 +128,7 @@ class UsuarioServiceV1Test {
         verify(usuarioRepository).save(any(Usuario.class));
         verifyNoMoreInteractions(usuarioRepository);
 
-        assertTrue(usuario.getDeleted());
+        assertFalse(usuario.getIsActive());
     }
 
 	@Test
