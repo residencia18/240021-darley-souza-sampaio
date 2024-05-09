@@ -19,7 +19,7 @@ public class PostagemService {
 	private PostagemRepository postagemRepository;
 
 	@Autowired
-	private UsuarioService usuarioService;
+	private UsuarioServiceV1 usuarioService;
 
 	public List<Postagem> findAll(Integer id) throws NotFoundException {
 		Usuario usuario = usuarioService.findUser(id);
