@@ -28,15 +28,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.dansoft.redesocial.controller.Form.UsuarioForm;
 import com.dansoft.redesocial.controller.dto.UsuarioDTO;
 import com.dansoft.redesocial.model.Usuario;
-import com.dansoft.redesocial.service.UsuarioService;
+import com.dansoft.redesocial.service.UsuarioServiceV1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
-@WebMvcTest(UsuarioController.class)
-public class UsuarioControllerTest {
+@WebMvcTest(UsuarioControllerV1.class)
+public class UsuarioControllerTestV1 {
 
 	@MockBean
-	private UsuarioService usuarioService;
+	private UsuarioServiceV1 usuarioService;
 
 	@Autowired
 	private MockMvc mockMvc;
