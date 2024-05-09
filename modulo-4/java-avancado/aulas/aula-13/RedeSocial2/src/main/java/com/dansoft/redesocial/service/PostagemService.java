@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class PostagemService {
 	private PostagemRepository postagemRepository;
 
 	@Autowired
+    @Qualifier("usuarioServiceV1")
 	private UsuarioServiceV1 usuarioService;
 
 	public List<Postagem> findAll(Integer id) throws NotFoundException {
