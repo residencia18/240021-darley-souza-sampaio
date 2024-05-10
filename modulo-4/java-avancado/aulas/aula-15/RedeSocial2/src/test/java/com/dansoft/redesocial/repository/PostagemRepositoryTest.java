@@ -119,7 +119,7 @@ class PostagemRepositoryTest {
 		postagem = testEntityManager.persistFlushFind(postagem);
 
 		PostagemForm postagemForm2 = geradorPostagemFaker();
-		Postagem postagem2 = postagemForm.toPostagem();
+		Postagem postagem2 = postagemForm2.toPostagem();
 
 		postagem2 = testEntityManager.persistFlushFind(postagem2);
 
