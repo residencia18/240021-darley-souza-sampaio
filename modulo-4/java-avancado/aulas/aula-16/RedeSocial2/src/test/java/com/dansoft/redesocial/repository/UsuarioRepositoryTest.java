@@ -42,7 +42,6 @@ class UsuarioRepositoryTest {
 		Usuario usuario = new Usuario();
 		usuario.setNome(faker.name().fullName());
 		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha("123@Teste");
 		return usuario;
 	}
 
@@ -56,7 +55,6 @@ class UsuarioRepositoryTest {
 		assertThat(usuarioSalvo.getId()).isGreaterThan(0);
 		assertThat(usuarioSalvo.getNome()).isEqualTo(usuario.getNome());
 		assertThat(usuarioSalvo.getEmail()).isEqualTo(usuario.getEmail());
-		assertThat(usuarioSalvo.getSenha()).isEqualTo(usuario.getSenha());
 	}
 
 	@Test

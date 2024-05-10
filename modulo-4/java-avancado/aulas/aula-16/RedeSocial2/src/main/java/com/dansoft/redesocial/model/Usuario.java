@@ -18,8 +18,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,19 +40,9 @@ public class Usuario {
 	@Email(regexp = ".+[@].+[\\.].+", message = "Email inválido")
 	private String email;
 
-	@Column(name = "senha", nullable = false, length = 32)
-	@NotEmpty(message = "A senha não deve ser vazia")
-	@NotNull(message = "A senha não deve ser nula")
-	@Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
-	@Pattern(regexp = ".*[a-z].*", message = "A senha deve conter pelo menos uma letra minúscula")
-	@Pattern(regexp = ".*[A-Z].*", message = "A senha deve conter pelo menos uma letra maiúscula")
-	@Pattern(regexp = ".*\\d.*", message = "A senha deve conter pelo menos um dígito")
-	@Pattern(regexp = ".*[@#$%^&+=.!].*", message = "A senha deve conter pelo menos um caractere especial")
-	private String senha;
-	
 	@Column(name = "is_active", nullable = false)
 	private Boolean isActive = true;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<Postagem> postagens = new ArrayList<Postagem>();
@@ -67,7 +55,6 @@ public class Usuario {
 	public Usuario(String nome, String email, String password, List<Usuario> amigos) {
 		this.nome = nome;
 		this.email = email;
-		this.senha = password;
 		this.amigos = amigos;
 	}
 

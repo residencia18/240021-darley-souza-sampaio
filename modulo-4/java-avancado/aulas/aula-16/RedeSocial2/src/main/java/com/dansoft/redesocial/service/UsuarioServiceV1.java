@@ -72,7 +72,6 @@ public class UsuarioServiceV1 {
 
 		usuario.setNome(usuarioForm.getNome());
 		usuario.setEmail(usuarioForm.getEmail());
-		usuario.setSenha(usuarioForm.getSenha());
 
 		return saveUser(usuario);
 

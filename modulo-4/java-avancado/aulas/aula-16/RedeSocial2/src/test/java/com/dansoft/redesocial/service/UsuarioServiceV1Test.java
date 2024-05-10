@@ -51,7 +51,6 @@ class UsuarioServiceV1Test {
 		usuario.setId(1L);
 		usuario.setNome(faker.name().fullName());
 		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha(faker.internet().password(8, 16, true, true, true));
 	}
 
 	@Test
@@ -157,7 +156,6 @@ class UsuarioServiceV1Test {
 
 		assertEquals(usuarioForm.getNome(), usuario.getNome());
 		assertEquals(usuarioForm.getEmail(), usuario.getEmail());
-		assertEquals(usuarioForm.getSenha(), usuario.getSenha());
 	}
 
 	@Test
@@ -201,7 +199,6 @@ class UsuarioServiceV1Test {
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
 		amigo.setEmail(faker.internet().emailAddress());
-		amigo.setSenha(faker.internet().password(8, 16, true, true, true));
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));
@@ -234,7 +231,6 @@ class UsuarioServiceV1Test {
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
 		amigo.setEmail(faker.internet().emailAddress());
-		amigo.setSenha(faker.internet().password(8, 16, true, true, true));
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));
@@ -255,7 +251,6 @@ class UsuarioServiceV1Test {
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
 		amigo.setEmail(faker.internet().emailAddress());
-		amigo.setSenha(faker.internet().password(8, 16, true, true, true));
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));
@@ -291,7 +286,6 @@ class UsuarioServiceV1Test {
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
 		amigo.setEmail(faker.internet().emailAddress());
-		amigo.setSenha(faker.internet().password(8, 16, true, true, true));
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));

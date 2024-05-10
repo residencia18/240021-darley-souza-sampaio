@@ -61,7 +61,6 @@ public class UsuarioControllerTestV1 {
 		Usuario usuario = new Usuario();
 		usuario.setNome(faker.name().fullName());
 		usuario.setEmail(faker.internet().emailAddress());
-		usuario.setSenha("123@Teste");
 		return usuario;
 	}
 
@@ -69,7 +68,6 @@ public class UsuarioControllerTestV1 {
 		UsuarioForm usuarioForm = new UsuarioForm();
 		usuarioForm.setNome(faker.name().fullName());
 		usuarioForm.setEmail(faker.internet().emailAddress());
-		usuarioForm.setSenha("123@Teste");
 		return usuarioForm;
 	}
 
