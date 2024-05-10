@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/postagens/")
+@RequestMapping("/v1/postagens/")
 @Slf4j
 public class PostagemController {
 	@Autowired
