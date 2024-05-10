@@ -52,7 +52,7 @@ public class Usuario {
 	@Pattern(regexp = ".*[@#$%^&+=.!].*", message = "A senha deve conter pelo menos um caractere especial")
 	private String senha;
 	
-	@Column(name = "isActive", nullable = false)
+	@Column(name = "is_active", nullable = false)
 	private Boolean isActive = true;
 	
 	@JsonIgnore
