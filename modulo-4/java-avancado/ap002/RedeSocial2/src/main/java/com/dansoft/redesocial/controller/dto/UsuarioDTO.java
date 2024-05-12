@@ -8,7 +8,6 @@ import lombok.Getter;
 public class UsuarioDTO {
 	private long id;
 	private String nome;
-	private String email;
 
 	public UsuarioDTO() {
 
@@ -17,7 +16,6 @@ public class UsuarioDTO {
 	public UsuarioDTO(Usuario user) {
 		this.id = user.getId();
 		this.nome = user.getNome();
-		this.email = user.getEmail();
 	}
 
 }

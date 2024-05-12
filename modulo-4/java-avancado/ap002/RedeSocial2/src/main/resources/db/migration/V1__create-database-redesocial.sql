@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS public.usuario (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,   
-    email VARCHAR(50) UNIQUE NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE
 );
 

@@ -60,14 +60,12 @@ public class UsuarioControllerTestV1 {
 	private Usuario geradorUsuarioFaker() {
 		Usuario usuario = new Usuario();
 		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 		return usuario;
 	}
 
 	private UsuarioForm geradorUsuarioFormFaker() {
 		UsuarioForm usuarioForm = new UsuarioForm();
 		usuarioForm.setNome(faker.name().fullName());
-		usuarioForm.setEmail(faker.internet().emailAddress());
 		return usuarioForm;
 	}
 

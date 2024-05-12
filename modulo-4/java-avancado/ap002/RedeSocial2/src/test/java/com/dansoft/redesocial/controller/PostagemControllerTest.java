@@ -61,7 +61,6 @@ class PostagemControllerTest {
 
 		usuario.setId(faker.number().randomNumber());
 		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 
 		return usuario;
 	}

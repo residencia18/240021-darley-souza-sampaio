@@ -48,21 +48,18 @@ public class AuthenticationController {
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody @Valid RegisterForm usuarioRegister) {
-		try {
+
 			
 		if (this.usuarioLoginRepository.findByLogin(usuarioRegister.login()) != null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		
 		String senhaCriptogragada = new BCryptPasswordEncoder().encode(usuarioRegister.senha());
-		UsuarioLogin novoUsuario = new UsuarioLogin(usuarioRegister.login(), senhaCriptogragada, usuarioRegister.role());
+		UsuarioLogin novoUsuario = new UsuarioLogin(usuarioRegister.login(), usuarioRegister.email(), senhaCriptogragada, usuarioRegister.role());
 		
 		this.usuarioLoginRepository.save(novoUsuario);
 		log.info("Registro do usuario " + usuarioRegister.login() + " realizado com sucesso!!");
 		return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			log.info("Erro ao realizar o registro com login " + usuarioRegister.login());
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+
 	}
 
 }

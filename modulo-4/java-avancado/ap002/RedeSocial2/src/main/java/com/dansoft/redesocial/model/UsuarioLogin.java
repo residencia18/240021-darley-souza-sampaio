@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -38,6 +39,12 @@ public class UsuarioLogin implements UserDetails {
 	@NotNull(message = "O login não deve ser nulo")
 	@Size(min = 5, message = "O login deve ter no mínimo 5 caracteres")
 	private String login;
+	
+	@Column(name = "email", length = 50, unique = true)
+	@NotEmpty(message = "O email não deve ser vazio")
+	@NotNull(message = "O email não deve ser nulo")
+	@Email(regexp = ".+[@].+[\\.].+", message = "Email inválido")
+	private String email;
 
 	@Column(name = "senha", nullable = false, length = 32)
 	@NotEmpty(message = "A senha não deve ser vazia")
@@ -52,9 +59,10 @@ public class UsuarioLogin implements UserDetails {
 	@Column(name = "role", nullable = false, length = 32)
 	private UsuarioLoginRole role;
 
-	public UsuarioLogin(String login, String senha, UsuarioLoginRole role) {
+	public UsuarioLogin(String login, String email, String senha, UsuarioLoginRole role) {
 		super();
 		this.login = login;
+		this.email = email;
 		this.senha = senha;
 		this.role = role;
 	}

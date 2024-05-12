@@ -71,7 +71,6 @@ public class UsuarioServiceV1 {
 			throw new NotFoundException();
 
 		usuario.setNome(usuarioForm.getNome());
-		usuario.setEmail(usuarioForm.getEmail());
 
 		return saveUser(usuario);
 

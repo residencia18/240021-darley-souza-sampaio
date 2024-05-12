@@ -50,7 +50,6 @@ class UsuarioServiceV1Test {
 		usuario = new Usuario();
 		usuario.setId(1L);
 		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 	}
 
 	@Test
@@ -144,7 +143,6 @@ class UsuarioServiceV1Test {
 	void userUpdate_ComIdValidoEFormularioValidoAtualizaUsuario() {
 		UsuarioForm usuarioForm = new UsuarioForm();
 		usuarioForm.setNome(faker.name().fullName());
-		usuarioForm.setEmail(faker.internet().emailAddress());
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
@@ -154,14 +152,12 @@ class UsuarioServiceV1Test {
 		verifyNoMoreInteractions(usuarioRepository);
 
 		assertEquals(usuarioForm.getNome(), usuario.getNome());
-		assertEquals(usuarioForm.getEmail(), usuario.getEmail());
 	}
 
 	@Test
 	void userUpdate_ComIdInvalidoLancaNotFoundException() {
 		UsuarioForm usuarioForm = new UsuarioForm();
 		usuarioForm.setNome(faker.name().fullName());
-		usuarioForm.setEmail(faker.internet().emailAddress());
 
 		when(usuarioRepository.findById(2)).thenReturn(Optional.empty());
 
@@ -196,7 +192,6 @@ class UsuarioServiceV1Test {
 		Usuario amigo = new Usuario();
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
-		amigo.setEmail(faker.internet().emailAddress());
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));
@@ -228,7 +223,6 @@ class UsuarioServiceV1Test {
 		Usuario amigo = new Usuario();
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
-		amigo.setEmail(faker.internet().emailAddress());
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));
@@ -248,7 +242,6 @@ class UsuarioServiceV1Test {
 		Usuario amigo = new Usuario();
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
-		amigo.setEmail(faker.internet().emailAddress());
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));
@@ -283,7 +276,6 @@ class UsuarioServiceV1Test {
 		Usuario amigo = new Usuario();
 		amigo.setId(2L);
 		amigo.setNome(faker.name().fullName());
-		amigo.setEmail(faker.internet().emailAddress());
 
 		when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 		when(usuarioRepository.findById(2)).thenReturn(Optional.of(amigo));

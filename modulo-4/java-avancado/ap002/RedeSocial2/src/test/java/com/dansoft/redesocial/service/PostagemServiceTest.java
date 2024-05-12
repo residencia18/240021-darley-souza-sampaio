@@ -54,7 +54,6 @@ class PostagemServiceTest {
 		usuario = new Usuario();
 		usuario.setId(1L);
 		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 		
 		postagem = new Postagem();
 		postagem.setId(1L);

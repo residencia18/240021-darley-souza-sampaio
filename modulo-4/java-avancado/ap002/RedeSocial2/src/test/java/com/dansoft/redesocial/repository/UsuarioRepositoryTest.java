@@ -41,7 +41,6 @@ class UsuarioRepositoryTest {
 	private Usuario geradorUsuarioFaker() {
 		Usuario usuario = new Usuario();
 		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 		return usuario;
 	}
 
@@ -54,7 +53,6 @@ class UsuarioRepositoryTest {
 		assertThat(usuarioSalvo).isNotNull();
 		assertThat(usuarioSalvo.getId()).isGreaterThan(0);
 		assertThat(usuarioSalvo.getNome()).isEqualTo(usuario.getNome());
-		assertThat(usuarioSalvo.getEmail()).isEqualTo(usuario.getEmail());
 	}
 
 	@Test
@@ -63,7 +61,6 @@ class UsuarioRepositoryTest {
 		testEntityManager.persistFlushFind(usuario1);
 
 		Usuario usuario2 = geradorUsuarioFaker();
-		usuario2.setEmail(usuario1.getEmail());
 
 		assertThatThrownBy(() -> usuarioRepository.save(usuario2)).isInstanceOf(Exception.class);
 	}

@@ -30,7 +30,6 @@ class UsuarioTest {
 	private void geradorDadosUsuario() {
 		usuario.setId((long) 1);
 		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 	}
 
 	@Test
@@ -79,49 +78,5 @@ class UsuarioTest {
 			log.info(violations.toString());
 
 		assertTrue(violations.isEmpty());
-	}
-
-	@Test
-	void testEmailVazio() {
-		usuario.setEmail("");
-
-		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
-
-		if (violations.isEmpty())
-			log.info("Teste para verificação de email vazio falhou.");
-
-		assertFalse(violations.isEmpty());
-		assertTrue(
-				violations.stream().anyMatch(violation -> violation.getMessage().equals("O email não deve ser vazio")));
-
-	}
-
-	@Test
-	void testEmailNulo() {
-		usuario.setEmail(null);
-
-		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
-
-		if (violations.isEmpty())
-			log.info("Teste para verificação de email nulo falhou.");
-
-		assertFalse(violations.isEmpty());
-		assertTrue(
-				violations.stream().anyMatch(violation -> violation.getMessage().equals("O email não deve ser nulo")));
-
-	}
-
-	@Test
-	void testEmailIncorreto() {
-		usuario.setEmail("teste@teste");
-
-		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
-
-		if (violations.isEmpty())
-			log.info("Teste para verificação de email incorreto falhou.");
-
-		assertFalse(violations.isEmpty());
-		assertTrue(violations.stream().anyMatch(violation -> violation.getMessage().equals("Email inválido")));
-
 	}
 }

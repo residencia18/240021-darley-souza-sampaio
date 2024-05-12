@@ -34,12 +34,6 @@ public class Usuario {
 	@NotNull(message = "O nome não deve ser nulo")
 	private String nome;
 
-	@Column(name = "email", length = 50, unique = true)
-	@NotEmpty(message = "O email não deve ser vazio")
-	@NotNull(message = "O email não deve ser nulo")
-	@Email(regexp = ".+[@].+[\\.].+", message = "Email inválido")
-	private String email;
-
 	@Column(name = "is_active", nullable = false)
 	private Boolean isActive = true;
 
@@ -52,9 +46,8 @@ public class Usuario {
 	@JoinTable(name = "amigos", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "amigo_id"))
 	private List<Usuario> amigos = new ArrayList<Usuario>();
 
-	public Usuario(String nome, String email, String password, List<Usuario> amigos) {
+	public Usuario(String nome, List<Usuario> amigos) {
 		this.nome = nome;
-		this.email = email;
 		this.amigos = amigos;
 	}
 

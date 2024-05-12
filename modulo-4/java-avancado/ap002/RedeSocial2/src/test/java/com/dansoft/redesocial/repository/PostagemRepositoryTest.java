@@ -43,7 +43,6 @@ class PostagemRepositoryTest {
 	private Usuario geradorUsuarioFaker() {
 		Usuario usuario = new Usuario();
 		usuario.setNome(faker.name().fullName());
-		usuario.setEmail(faker.internet().emailAddress());
 		return usuario;
 	}
 
