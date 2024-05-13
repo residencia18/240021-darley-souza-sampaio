@@ -31,31 +31,31 @@ public class AuthenticationController {
 
 	@Autowired
 	private UsuarioLoginRepository usuarioLoginRepository;
-	
+
 	@Autowired
 	private TokenService tokenService;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationForm usuarioForm) {
-			var usuarioSenha = new UsernamePasswordAuthenticationToken(usuarioForm.login(), usuarioForm.senha());
-			var auth = this.authManager.authenticate(usuarioSenha);
-			
-			var token = tokenService.geradorToken((UsuarioLogin) auth.getPrincipal());
-			log.info("Atenticação do usuario " + usuarioForm.login() + " realizada com sucesso!");
+		var usuarioSenha = new UsernamePasswordAuthenticationToken(usuarioForm.login(), usuarioForm.senha());
+		var auth = this.authManager.authenticate(usuarioSenha);
 
-			return new ResponseEntity<>(new LoginResponseDTO(token), HttpStatus.OK);
+		var token = tokenService.geradorToken((UsuarioLogin) auth.getPrincipal());
+		log.info("Atenticação do usuario " + usuarioForm.login() + " realizada com sucesso!");
+
+		return new ResponseEntity<>(new LoginResponseDTO(token), HttpStatus.OK);
 	}
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody @Valid RegisterForm usuarioRegister) {
 
-			
 		if (this.usuarioLoginRepository.findByLogin(usuarioRegister.login()) != null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		
+
 		String senhaCriptogragada = new BCryptPasswordEncoder().encode(usuarioRegister.senha());
-		UsuarioLogin novoUsuario = new UsuarioLogin(usuarioRegister.login(), usuarioRegister.email(), senhaCriptogragada, usuarioRegister.role());
-		
+		UsuarioLogin novoUsuario = new UsuarioLogin(usuarioRegister.login(), usuarioRegister.email(),
+				senhaCriptogragada, usuarioRegister.role());
+
 		this.usuarioLoginRepository.save(novoUsuario);
 		log.info("Registro do usuario " + usuarioRegister.login() + " realizado com sucesso!!");
 		return new ResponseEntity<>(HttpStatus.CREATED);
