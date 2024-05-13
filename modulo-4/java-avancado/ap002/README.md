@@ -16,6 +16,10 @@ Este projeto contém os serviços de autenticação e recuperação de senha par
 1. Crie um banco de dados PostgreSQL com o nome `redeSocial`.
 2. Configure as credenciais de acesso ao banco de dados no arquivo `application.properties`.
 
+### Configuração do Banco do SMTP
+
+1. Configure as credenciais de envio de email SMTP no `application.properties`.
+
 ### Execução do Projeto
 
 1. Clone este repositório.
