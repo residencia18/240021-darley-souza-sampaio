@@ -17,36 +17,34 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
-	
+
 	@Autowired
-	private SecurityFilter securityFilter; 
-	
+	private SecurityFilter securityFilter;
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-	    return httpSecurity.csrf(csrf -> csrf.disable())
-	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	            .authorizeHttpRequests(authorize -> authorize
-	                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-	                    .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-	                    .requestMatchers(HttpMethod.POST, "/v2/usuarios/").hasRole("ADMIN")
-	                    .requestMatchers(HttpMethod.POST, "/v1/usuarios/").hasRole("ADMIN")
-	                    .requestMatchers(HttpMethod.POST, "/postagens/").hasRole("ADMIN")
-	                    .requestMatchers(HttpMethod.PUT, "/recovery/{email}").permitAll()
-	                    .requestMatchers(HttpMethod.PUT, "/reset-password").permitAll()
-	                    
-	                    .anyRequest().authenticated()
-	            )
-	            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-	            .build();
+		return httpSecurity.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/swagger-ui/**", "/v3/api-docs", "/swagger-resources/**", "/webjars/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+						.requestMatchers(HttpMethod.POST, "/v2/usuarios/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/v1/usuarios/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/postagens/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/recovery/{email}").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/reset-password").permitAll().anyRequest().authenticated())
+				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
-	
+
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
-	
+
 	@Bean
-	public PasswordEncoder passwordEncoder(){
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 

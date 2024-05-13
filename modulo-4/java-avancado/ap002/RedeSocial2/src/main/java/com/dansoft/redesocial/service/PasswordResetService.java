@@ -43,7 +43,7 @@ public class PasswordResetService {
 
 		usuario.setSenha(senhaCriptografada);
 
-		usuarioLoginRepository.save(usuario);
+		usuarioLoginRepository.saveAndFlush(usuario);
 
 		tokenService.invalidateToken(token);
 		log.info("Senha do usuario " + usuario.getLogin() + "foi alterada com sucesso.");
