@@ -8,7 +8,7 @@ Este projeto contém os serviços de autenticação e recuperação de senha par
 
 - Java 8 ou superior
 - Maven
-- PostgreSQL (ou outro banco de dados compatível)
+- PostgreSQL
 - Postman (ou outra ferramenta para testar APIs)
 
 ### Configuração do Banco de Dados
@@ -43,9 +43,7 @@ Permite que usuários sejam cadastrados.
     }
   
 - **Response (Exemplo):**
-    ```json
-    Response: Código de status 201 Created se o registro for bem-sucedido.
-    ```
+    `Response: Código de status 201 Created se o registro for bem-sucedido.`
 
 #### Login
 
