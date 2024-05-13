@@ -9,5 +9,5 @@ import com.dansoft.redesocial.model.UsuarioLogin;
 @Repository
 public interface UsuarioLoginRepository extends JpaRepository<UsuarioLogin, Integer> {
 	UserDetails findByLogin(String login);
-	UserDetails findByEmail(String email);
+	UsuarioLogin findByEmail(String email);
 }
