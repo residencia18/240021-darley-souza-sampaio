@@ -16,3 +16,6 @@
 [submodule "modulo-3/java/residencia-tic18-java"]
 	path = modulo-3/java/residencia-tic18-java
 	url = https://github.com/danssampaio/residencia-tic18-java.git
+[submodule "modulo-4/front-avancado/fea-p006"]
+	path = modulo-4/front-avancado/fea-p006
+	url = https://github.com/residencia18/240039-joao-vitor-nascimento-ramos/tree/a06ef131468a48b13309aebbcc6420d2a1db737c/front-avancado/FEA_06
