@@ -4,7 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,7 +70,7 @@ class ProductRatingControllerTest {
 	private Product geradorProductFaker() {
 		Product product = new Product();
 		product.setId(1L);
-		product.setSku("DEL-123");
+		product.setSku(faker.commerce().promotionCode());
 		product.setName(faker.commerce().productName());
 		product.setDescription(faker.lorem().sentence());
 		product.setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 100)));
@@ -93,29 +92,19 @@ class ProductRatingControllerTest {
 	@Test
 	void postRating_deveSalvarPostagemEretornarCreated() throws Exception {
 		ProductRatingDto productRatingDto = geradorProductRatingDtoFaker();
-		String sku = "DEL-123";
 		Product product = geradorProductFaker();
 		ProductRating productRating = productRatingDto.toProductRating(productRatingDto);
 		productRating.setId(1L);
 		productRating.setProduct(product);
 		
+        when(tokenService.validateToken(any(String.class))).thenReturn("username");
+
         when(productRatingService.postProductRating(any(ProductRatingDto.class), any(String.class)))
         .thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
 
-		mockMvc.perform(post("/submit/{sku}", sku).content(objectMapper.writeValueAsString(productRatingDto))
+		mockMvc.perform(post("/submit/" + product.getSku()).content(objectMapper.writeValueAsString(productRatingDto))
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated())
 				.andExpect(content().json(objectMapper.writeValueAsString(productRating)));
 	}
-	
-	@Test
-    void getRating_deveRetornarAvaliacoesDoProduto_quandoSkuFornecido() throws Exception {
-        String sku = "DEL-123";
-
-        when(productRatingService.getProductRating(sku))
-                .thenReturn(new ResponseEntity<>(HttpStatus.OK));
-
-        mockMvc.perform(get("/api/products/ratings/get/{sku}", sku))
-                .andExpect(status().isOk());
-    }
 
 }

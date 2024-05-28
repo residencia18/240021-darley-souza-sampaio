@@ -56,9 +56,9 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponseDTO> login(
             @RequestBody @Valid LoginDTO data) {
         
-        log.info("Attempting to authenticate user with email: {}", data.username());
+        log.info("Attempting to authenticate user with username: {}", data.username());
         var response = authService.login(data);
-        log.info("User with email: {} authenticated successfully", data.username());
+        log.info("User with username: {} authenticated successfully", data.username());
         return ResponseEntity.ok(response);
     }
 
@@ -77,9 +77,9 @@ public class AuthenticationController {
     public ResponseEntity<String> signup(
             @RequestBody @Valid SignupDTO data) {
         
-        log.info("Attempting to sign up user with email: {}", data.username());
+        log.info("Attempting to sign up user with username: {}", data.username());
         authService.signup(data);
-        log.info("User with email: {} signed up successfully", data.username());
+        log.info("User with username: {} signed up successfully", data.username());
         return ResponseEntity.ok(bundle.getString("user.successfully_signed_up"));
     }
 
