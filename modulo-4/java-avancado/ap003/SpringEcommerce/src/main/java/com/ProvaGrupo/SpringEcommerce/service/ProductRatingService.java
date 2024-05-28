@@ -25,7 +25,7 @@ public class ProductRatingService {
     @Autowired
     ProductRepository productRepository;
 
-    public ProductRating postProductRating(@Valid ProductRatingDto productRatingDto, String sku) {
+    public ResponseEntity<?> postProductRating(@Valid ProductRatingDto productRatingDto, String sku) {
         try {
             log.info("Attempting to post a new product rating for SKU: {}", sku);
             ProductRating productRating = productRatingDto.toProductRating(productRatingDto);
@@ -41,10 +41,10 @@ public class ProductRatingService {
             productRepository.save(product);
 
             log.info("Successfully posted a new product rating for SKU: {}", sku);
-            return savedRating;
+            return new ResponseEntity<>(savedRating, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating product rating for SKU: {}", sku, e);
-            return null;
+            return new ResponseEntity<>("Error creating product rating", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
